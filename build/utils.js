@@ -138,7 +138,7 @@ exports.htmlPlugins = function () {
   var arr = [];
   for (var pathname in pages) {
     // 配置生成的html文件，定义路径等
-    let chunks = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'production-dev' ? ['manifest', 'vendor',pathname.replace(/^view\//, '')] : [pathname.replace(/^view\//, '')];
+    let chunks = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'production-dev' ? ['manifest','common','vendor',pathname.replace(/^view\//, '')] : [pathname.replace(/^view\//, '')];
     var conf = {
       filename: pathname + '.html',
       template: pages[pathname], // 模板路径
