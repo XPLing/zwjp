@@ -445,7 +445,6 @@ var util = {
   },
   laydate: {
     setPath: function (laydate) {
-      debugger
       laydate.path = 'http://file.kingbrother.com:8082/static/laydate/';
     },
     option: {}

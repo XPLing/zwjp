@@ -204,12 +204,12 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
 
 });
 
-import(/* webpackChunkName: "laydate" */ 'laydate').then((laydate) => {
+
+import(/* webpackChunkName: "laydate" */ 'components/lib/laydate/laydateChunk').then((laydate) => {
   $(() => {
-    laydate = typeof laydate === 'function' ? laydate : window.laydate;
+    console.log(laydate);
     // 设置laydate css加载路径
     util.laydate.setPath(laydate);
-    console.log(laydate);
     // laydate初始化
     var layOptStart = $.extend({}, util.laydate.option, {
       elem: '#startTime',
@@ -403,6 +403,7 @@ var modle = {
     }
   }
 };
+
 $(document).ready(function () {
   // 页面ui初始化
   util.basic.init();

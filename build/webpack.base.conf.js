@@ -42,7 +42,7 @@ module.exports = {
       'scss': resolve('src/assets/scss'),
       'components': resolve('src/components'),
       'src': resolve('src'),
-      'laydate': resolve('src/assets/js/lib/laydate/laydate.js')
+      'laydate': resolve('src/components/lib/laydate/laydateChunk.js')
     }
   },
   module: {
