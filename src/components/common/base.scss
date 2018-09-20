@@ -1,0 +1,610 @@
+@import "~scss/compile";
+/* bootstrap reset */
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+  background-color: $themColor;
+  border-color: $themColor;
+}
+.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover{
+  color: $borderColor2;
+}
+.pagination>li>a, .pagination>li>span,.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus{
+  color: $loginCopyrightColor;
+}
+.g-wrap {
+  .c-chunk,.panel {
+    h1, h2 {
+      margin: 0;
+      padding: 0;
+    }
+    .title-box {
+      padding: formatVal(10, rem) 0;
+      margin-bottom: formatVal(20, rem);
+      border-bottom: 1px solid $borderColor;
+      h1 {
+        @include fs(16);
+        font-weight: bold;
+      }
+    }
+    .panel-heading{
+      h1 {
+        @include fs(16);
+        font-weight: bold;
+      }
+    }
+  }
+  .row{
+    margin: 0;
+  }
+  color: $defaultColor;
+  .g-header {
+    /*position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;*/
+    @include h(50);
+    overflow-y: hidden;
+    background-color: $themColor;
+    border-bottom: 1px solid $borderColor;
+    .navbar {
+      height: 100%;
+      .navbar-right, .navbar-text {
+        margin: 0;
+        @include lh(50);
+        &:focus {
+          color: #a94442;
+        }
+      }
+      .navbar-right {
+        color: #fff;
+        .navbar-link {
+          color: #fff;
+          margin-left: 10px;
+        }
+      }
+      .navbar-header {
+        width: 50%;
+        .item{
+          @include lh(50);
+          display: inline-block;
+          &.line{
+            position: relative;
+            top: formatVal(9,rem);
+            width: 1px;
+            @include h(16);
+            margin: 0 formatVal(10,rem) 0;
+            background-color: $color-transparency-white-5;
+            //background-color: #000;
+          }
+          &.flag{
+            margin: 0;
+            img{
+              @include h(25);
+            }
+          }
+        }
+        .navbar-brand {
+          margin-left: formatVal(25,rem);
+          @include lh(45);
+          img {
+            @include w(90);
+          }
+
+        }
+      }
+    }
+  }
+  &.active {
+    .g-subnav {
+      position: fixed;
+      top: 0;
+    }
+  }
+  .g-subnav {
+    position: absolute;
+    z-index: 100;
+    top: formatVal(40, rem);
+    bottom: 0;
+    left: 0;
+    @include w(150);
+    overflow: hidden;
+    border-right: 1px solid $borderColor;
+    padding-bottom: 80px;
+    /*background-color: $subNavBgColor;*/
+    @media screen and(min-width: 1500px){
+      @include w(200);
+    }
+    .nav-master{
+      .panel-group {
+        margin-bottom: 0;
+        .panel {
+          cursor: pointer;
+          border-radius: 0;
+          border: none;
+          background-color: transparent;
+          & + .panel {
+            margin-top: 0;
+            border-top: 1px solid $loginMainBgColor;
+          }
+          &.active {
+            > .panel-heading {
+              > a {
+                background-color: $borderColor;
+              }
+            }
+          }
+          .panel-heading {
+            position: relative;
+            padding: 0;
+            &.collapsed {
+              .icon {
+                &:before {
+                  content: '\f107';
+                }
+              }
+            }
+            &.disabled{
+              a{
+                color: $borderColor2;
+              }
+            }
+            a {
+              display: block;
+              padding: formatVal(10, rem);
+              color: $defaultColor;
+              &:hover, &:focus {
+                background-color: $borderColor;
+                text-decoration: none;
+              }
+            }
+            .icon {
+              position: absolute;
+              right: formatVal(10, rem);
+              bottom: formatVal(13, rem);
+              &:before {
+                content: '\f106';
+              }
+            }
+          }
+          .panel-collapse {
+            > .panel-body {
+              padding: 0;
+              .panel-group {
+                .panel {
+                  & + .panel {
+                    border-top-width: 0;
+                  }
+                  a {
+                    text-indent: .5em;
+                    @media screen and(min-width: 1500px){
+                      text-indent: 1em;
+                    }
+                  }
+                  .panel-body {
+                    a {
+                      text-indent: 2em;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+
+  }
+  .g-main {
+    position: relative;
+    //left: formatVal(150, rem);
+    //right: 0;
+    //bottom: 0;
+    padding: formatVal(10,rem);
+    overflow: auto;
+    .search-wrapper{
+      position: relative;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 5px;
+      @include fs(12);
+      input[type=text]{
+        @include h(25);
+        @include lh(25);
+      }
+      .control-bar{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        .icon{
+          @include fs(20);
+          cursor: pointer;
+          &[data-type='collapse'].active{
+            &:before{
+              content: "\f056";
+            }
+          }
+        }
+      }
+      .c-search-form {
+        .c-select {
+          @include w(200);
+          @media only screen and(max-width: 1300px) {
+            @include w(150);
+          }
+          .c-select-btn{
+            width: 100%;
+          }
+          .c-select-menu{
+            width: 100%;
+            max-height: formatVal(250,rem);
+            overflow-y: auto;
+          }
+          .btn{
+            @include fs(12);
+            @include h(25);
+            @include lh(25);
+            padding: 0 12px;
+          }
+
+        }
+        .collapse-table-item{
+          display: none;
+          &.on{
+            display: table-row;
+          }
+        }
+        .form-item {
+          @extend %lineElem_middle;
+          padding: formatVal(5, rem);
+          text-align: justify;
+          input[type=text]{
+            @include w(200);
+            @media only screen and(max-width: 1300px) {
+              @include w(150);
+            }
+          }
+          &.collapse-item{
+            display: none;
+            &.on{
+              display: inline-block;
+            }
+          }
+          .title{
+            @extend %lineElem_middle;
+            width: 5em;
+            font-weight: bold;
+            text-align: right;
+          }
+          &.btnbox{
+            width: 100%;
+            display: block;
+            text-align: right;
+            .btn-item{
+              color: #fff;
+              background-color: $themColor;
+              &:hover{
+                background-color: $orange;
+              }
+            }
+          }
+          &.timer{
+            input[type=text]{
+              @include w(94);
+              @media only screen and(max-width: 1300px) {
+                @include w(75);
+              }
+            }
+          }
+        }
+      }
+    }
+    .operate-wrapper{
+      margin-top: formatVal(10,rem);
+      .control-btn{
+        .btn{
+          &:hover{
+            color: #fff;
+            border-color: $themColor;
+            background-color: $themColor;
+          }
+          &.btn-theme{
+            color: #fff;
+            border-color: $themColor;
+            background-color: $themColor;
+          }
+        }
+      }
+      .checkbox{
+        input,span{
+          @extend %lineElem_middle
+        }
+        input{
+          margin-top: 0;
+          margin-right: .5em;
+        }
+      }
+      .form-inline{
+        >div+div{
+          margin-left: 2em;
+        }
+      }
+    }
+  }
+  .modify-page{
+    .c-table-wrapper{
+      border: 1px solid $loginMainBgColor;
+      border-top: none;
+      td{
+        vertical-align: middle;
+        padding: formatVal(20,rem) formatVal(15,rem);
+        &.title{
+          width: formatVal(100,rem);
+          min-width: auto;
+        }
+      }
+    }
+    .c-btn-group{
+      text-align: center;
+      .btn+.btn{
+        margin-left: 10px;
+      }
+    }
+  }
+  .c-table-wrapper {
+    margin: formatVal(4,rem) 0 formatVal(10,rem);
+    >.table-wrapper{
+
+    }
+    .c-shadow-local-abs {
+      background-color: rgba(255, 255, 255, 0.4);
+      top: 0;
+      bottom: 0;
+      .c-center-ta {
+        .c-center-tc {
+          .c-center-cont {
+            color: #666;
+            i {
+              @include fs(22);
+            }
+          }
+        }
+      }
+    }
+    .table-filter {
+      display: none;
+      .dataTables_filter {
+        text-align: left;
+      }
+    }
+    .table-page {
+      margin-top: formatVal(20,rem);
+      & > div {
+        //width: 50%;
+      }
+      .dataTables_info {
+        //float: left;
+      }
+      .dataTables_paginate {
+        //float: right;
+      }
+    }
+    .dataTables_processing {
+
+    }
+    .table-main {
+      width: 100%;
+      overflow: auto;
+      .disable{
+        color: $tipColor;
+      }
+      .table-wrapper {
+        position: relative;
+        float: left; //这使得包裹在table外面的table-wrapper宽度等于table的宽度
+        .c-table {
+          th,td{
+            vertical-align: middle;
+          }
+          td {
+            &.operate {
+              .btn+.btn{
+                margin-top: 8px;
+              }
+              &.text-nowrap{
+                .btn+.btn{
+                  margin-top: 0;
+                  margin-left: 8px;
+                }
+              }
+            }
+            .text-success{
+              color: $themColor;
+            }
+            .text-success,.text-danger{
+              font-weight: bold;
+            }
+          }
+          tr.tip-meg {
+            display: none;
+            &.active {
+              display: table-row;
+            }
+            td {
+              text-align: center;
+              vertical-align: middle;
+              height: formatVal(100, rem);
+            }
+          }
+          .search{
+            input[type=text]{
+              width: auto;
+              @include h(28);
+              @include lh(28);
+            }
+          }
+        }
+
+      }
+    }
+    .progress {
+      margin-bottom: 0;
+      .progress-bar {
+        color: $defaultColor;
+        span{
+          display: inline-block;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+  &.table-modify{
+    .g-main{
+      >.panel{
+        >.panel-body{
+          position: relative;
+          .c-shadow-local-abs {
+            background-color: rgba(255, 255, 255, 0.4);
+            top: 0;
+            bottom: 0;
+            .c-center-ta {
+              .c-center-tc {
+                .c-center-cont {
+                  color: #666;
+                  i {
+                    @include fs(22);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .g-footer{
+    padding: formatVal(10,rem) 0 formatVal(10,rem) formatVal(160,rem);
+    text-align: center;
+    color: $borderColor2;
+    @include fs(12);
+    @media screen and(min-width: 1500px){
+      padding-left: formatVal(210,rem);
+    }
+  }
+}
+.modal {
+  &.middle{
+    .modal-dialog {
+      width: 45%;
+      margin: formatVal(100,rem) auto 0;
+    }
+  }
+  .modal-dialog {
+    width: 80%;
+    &.modal-sm {
+      @media (min-width: 768px){
+        width: 300px;
+      }
+    }
+    .c-table-wrapper{
+      &.modal-table-detail {
+        margin: 0;
+        .table-wrapper{
+          float: none;
+        }
+        .c-table {
+          margin: 0 auto;
+          td.title {
+            background-color: #e8e8e8;
+          }
+        }
+      }
+    }
+  }
+}
+.modal-wrapper{
+  .technical-support-modal{
+    z-index: 200;
+    .modal-dialog{
+      width: 90%!important;
+      margin-top: formatVal(50,rem) !important;
+    }
+    .modal-body{
+      .table{
+        th,td{
+          text-align: center;
+          vertical-align: middle;
+        }
+        th.title{
+          background-color: $loginMainBgColor;
+        }
+      }
+    }
+    .panel-group{
+      &+.panel-group{
+        margin-top: 10px;
+      }
+      .panel{
+        @extend %lineElem_text-top;
+        width: 30%!important;;
+        &+.panel{
+          margin-left: 5%;
+          margin-top: 0;
+        }
+        .panel-body{
+          padding: 0;
+
+        }
+        .media{
+          &>div{
+            padding: formatVal(15,rem);
+          }
+          .media-left{
+            width: 25%;
+            text-align: center;
+          }
+          .media-body{
+            p{
+              margin: 0;
+              &+p{
+                margin-top: 10px;
+              }
+            }
+            border-left: 1px solid $loginMainBgColor;
+          }
+        }
+      }
+
+    }
+  }
+}
+.export-modal{
+  .modal-dialog{
+    .modal-body{
+      .c-form-name{
+        width: 6em;
+      }
+    }
+  }
+  .c-select{
+    .c-select-btn{
+      width: 25.5em;
+    }
+  }
+  .btn-primary{
+    background-color: $themColor;
+  }
+}
+.ie8 {
+  .g-wrap.m-admin {
+    .g-header {
+      .navbar {
+        .navbar-right {
+          float: right;
+        }
+        .navbar-header {
+          float: left;
+        }
+      }
+    }
+  }
+}

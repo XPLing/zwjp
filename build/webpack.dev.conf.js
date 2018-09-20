@@ -30,6 +30,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
+    openPage: config.dev.openPage,
     overlay: config.dev.errorOverlay
       ? {warnings: false, errors: true}
       : false,
@@ -63,7 +64,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     ])
   ].concat(utils.htmlPlugins())
 });
-
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = process.env.PORT || config.dev.port;
   portfinder.getPort((err, port) => {

@@ -1,0 +1,29 @@
+<header class="g-header nav-flag">
+    <input type="hidden" id="userCode" value="202201">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header item">
+                <a class="navbar-brand" href="#">
+                    <img alt="金百泽商户系统" src="<%= require('./logo.png') %>">
+                </a>
+                <span class="item line"></span>
+                <p class="item flag">
+                    <img alt="金百泽客户系统" src="<%= require('./headerIcon.png') %>">
+                </p>
+            </div>
+            <%
+                var isShow = userInfoFlag;
+                if(isShow){ %>
+            <p class="navbar-text navbar-right">
+                您好！XXX
+                <span>
+                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                </span>
+                <a href="#" class="navbar-link text-muted" id="exitAccount">退出</a>
+            </p>
+                <%}
+            %>
+
+        </div>
+    </nav>
+</header>
