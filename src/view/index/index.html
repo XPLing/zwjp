@@ -5,12 +5,12 @@
 <![endif]-->
 <head>
   <%= require("ejs-loader!components/common/head.ejs")() %>
-  <title>文档列表</title>
+  <title>云创硬见 | 在线PCB封装库</title>
 </head>
 <body>
 <%= require("ejs-loader!components/base/alert/alert.ejs")({className:'c-message'}) %>
 <div class="g-wrap">
-  <%= require("ejs-loader!components/common/header/header.ejs")({userInfoFlag:true}) %>
+  <%= require("ejs-loader!components/common/header/header.ejs")({userInfoFlag:false}) %>
   <div class="g-main">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -19,57 +19,59 @@
       <div class="panel-body">
         <div class="search-wrapper">
           <form class="c-search-form">
-            <div class="form-item activeFlag">
-              <span class="title">账号状态：</span>
-              <div class="btn-group c-select" data-isload="true">
-                <button type="button" class="btn btn-default dropdown-toggle c-select-btn"
-                        data-id="0"
-                        data-toggle="dropdown">
-                  全部
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu c-select-menu" role="menu">
-                  <li class="item" data-id="0">
-                    <a href="#">全部</a>
-                  </li>
-                  <li class="item" data-id="1">
-                    <a href="#">功能</a>
-                  </li>
-                  <li class="item" data-id="2">
-                    <a href="#">另一个功能</a>
-                  </li>
-                </ul>
-                <input type="hidden" name="clubGuid" class="dataElem search-activeFlag-val" value="">
-              </div>
+            <div class="form-item name">
+              <label class="title">文档名称：</label>
+              <input type="text" class="search-name-val"/>
             </div>
-            <div class="form-item userCode">
-              <label class="title">账号：</label>
-              <input type="text" class="search-userCode-val"/>
-            </div>
-            <div class="form-item nickName">
-              <label class="title">简称：</label>
-              <input type="text" class="search-nickName-val"/>
-            </div>
-            <div class="form-item linkManName">
-              <label class="title">姓名：</label>
-              <input type="text" class="search-linkManName-val"/>
-            </div>
-            <div class="form-item tel">
-              <label class="title">固话：</label>
-              <input type="text" class="search-tel-val"/>
-            </div>
-            <div class="form-item fax">
-              <label class="title">传真：</label>
-              <input type="text" class="search-fax-val"/>
-            </div>
-            <div class="form-item mobile">
-              <label class="title">手机：</label>
-              <input type="text" class="search-mobile-val"/>
-            </div>
-            <div class="form-item email">
-              <label class="title">邮箱：</label>
-              <input type="text" class="search-email-val"/>
-            </div>
+            <!--<div class="form-item type">-->
+              <!--<span class="title">文档类型：</span>-->
+              <!--<div class="btn-group c-select" data-isload="true">-->
+                <!--<button type="button" class="btn btn-default dropdown-toggle c-select-btn"-->
+                        <!--data-id=""-->
+                        <!--data-toggle="dropdown">-->
+                  <!--全部-->
+                  <!--<span class="caret"></span>-->
+                <!--</button>-->
+                <!--<ul class="dropdown-menu c-select-menu" role="menu">-->
+                  <!--<li class="item" data-id="">-->
+                    <!--<a href="#">全部</a>-->
+                  <!--</li>-->
+                  <!--<li class="item" data-id="1">-->
+                    <!--<a href="#">技术文档</a>-->
+                  <!--</li>-->
+                  <!--<li class="item" data-id="2">-->
+                    <!--<a href="#">质量文档</a>-->
+                  <!--</li>-->
+                  <!--<li class="item" data-id="3">-->
+                    <!--<a href="#">交付文档</a>-->
+                  <!--</li>-->
+                  <!--<li class="item" data-id="4">-->
+                    <!--<a href="#">营销文档</a>-->
+                  <!--</li>-->
+                  <!--<li class="item" data-id="5">-->
+                    <!--<a href="#">资质荣誉</a>-->
+                  <!--</li>-->
+                  <!--<li class="item" data-id="10">-->
+                    <!--<a href="#">其他</a>-->
+                  <!--</li>-->
+                <!--</ul>-->
+                <!--<input type="hidden" name="clubGuid" class="dataElem search-type-val" value="">-->
+              <!--</div>-->
+            <!--</div>            -->
+            <!--<div class="form-item labelNames">-->
+              <!--<label class="title">文档标签：</label>-->
+              <!--<input type="text" class="search-labelNames-val"/>-->
+            <!--</div>-->
+            <!--<div class="form-item lastModifiedByName">-->
+              <!--<label class="title">更新人：</label>-->
+              <!--<input type="text" class="search-lastModifiedByName-val"/>-->
+            <!--</div>-->
+            <!--<div class="form-item timer">-->
+              <!--<span class="title">时间:</span>-->
+              <!--<input type="text" class="layui-input start-time" id="startTime">-->
+              <!--<span>~</span>-->
+              <!--<input type="text" class="layui-input start-time" id="endTime">-->
+            <!--</div>-->
             <div class="form-item btnbox">
               <button type="button" class="btn btn-item search-submit-btn">查询</button>
               <button type="reset" class="btn btn-item search-reset-btn">重置</button>
@@ -77,11 +79,11 @@
           </form>
         </div>
         <div class="operate-wrapper">
-          <form class="form-inline">
-            <div class="form-group control-btn">
-              <button type="button" class="btn btn-default batch-btn-hook btn-theme" data-type="excel">上传材料</button>
-            </div>
-          </form>
+          <!--<form class="form-inline">-->
+            <!--<div class="form-group control-btn">-->
+              <!--<button type="button" class="btn btn-default batch-btn-hook btn-theme" data-type="excel">上传材料</button>-->
+            <!--</div>-->
+          <!--</form>-->
         </div>
         <div class="c-table-wrapper">
           <div class="c-shadow-local-abs">
@@ -100,64 +102,20 @@
             <tr>
               <th>文档名称</th>
               <th>文档类型</th>
+              <th>文档标签</th>
               <th>最后更新时间</th>
-              <th>状态</th>
-              <th>更新人</th>
+              <th>最后更新人</th>
+              <th>文档大小</th>
               <th>操作</th>
             </tr>
             </thead>
-            <tbody id="dataTableData">
-            <tr>
-              <td>CAD文件转换</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/CAD文件转换.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>GYNL工艺能力介绍</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/GYNL工艺能力介绍.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>PCB 设计覆铜板选材介绍</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/PCB 设计覆铜板选材介绍.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>PCB可制造性设计</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/PCB可制造性设计.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>PCB技术工艺能力（2018V.0版）</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/PCB技术工艺能力（2018V.0版）.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>PCB板UL黄卡：金百泽Online Certifications  Directory</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/PCB板UL黄卡：金百泽Online Certifications  Directory.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>云创造物订单及流程说明</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/云创造物订单及流程说明.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>刚挠板UL黄卡：金百泽Online Certifications Directory  E498259</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/刚挠板UL黄卡：金百泽Online Certifications Directory  E498259.pdf">详情</a></td>
-            </tr>
-            <tr>
-              <td>解析 CAF 发生原理及改善方法</td>
-              <td><a target="_blank" href="/view/admin/docList_detail.html?file=/static/pdf/resource/解析 CAF 发生原理及改善方法.pdf">详情</a></td>
-            </tr>
-            </tbody>
+            <tbody id="dataTableData"></tbody>
           </table>
-        </div>
-        <div class="tip">
-          <p>提醒：</p>
-          <ul>
-            <li>1、建议使用chrome(推荐)、firefox或者ie9版本以上的浏览器查阅文档；</li>
-            <li>2、若您使用的是360、QQ等浏览器(建议更新至最新版本)，可切换为极速模式查看文档；</li>
-            <li>3、若无法正常在线阅读，可直接下载到电脑中查看； </li>
-          </ul>
         </div>
       </div>
     </div>
-
   </div>
+  <%= require("ejs-loader!components/common/footer/footer.ejs")()%>
 </div>
 <%= require("ejs-loader!components/common/footerScript.ejs")() %>
 

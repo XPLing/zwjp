@@ -51,6 +51,7 @@
       .navbar-right, .navbar-text {
         margin: 0;
         @include lh(50);
+        @include h(50);
         &:focus {
           color: #a94442;
         }
@@ -65,20 +66,20 @@
       .navbar-header {
         width: 50%;
         .item{
-          @include lh(50);
-          display: inline-block;
+          @extend %lineElem_middle;
           &.line{
             position: relative;
-            top: formatVal(9,rem);
+
             width: 1px;
             @include h(16);
-            margin: 0 formatVal(10,rem) 0;
+            margin: formatVal(20,rem) formatVal(10,rem) 0;
             background-color: $color-transparency-white-5;
             //background-color: #000;
           }
           &.flag{
             margin: 0;
             img{
+              margin-top: formatVal(20,rem);
               @include h(25);
             }
           }
@@ -86,6 +87,7 @@
         .navbar-brand {
           margin-left: formatVal(25,rem);
           @include lh(45);
+          @include h(50);
           img {
             @include w(90);
           }
@@ -209,8 +211,9 @@
       border-radius: 5px;
       @include fs(12);
       input[type=text]{
-        @include h(25);
-        @include lh(25);
+        @include h(30);
+        @include lh(30);
+        border-radius: 4px;
       }
       .control-bar{
         position: absolute;
@@ -242,8 +245,8 @@
           }
           .btn{
             @include fs(12);
-            @include h(25);
-            @include lh(25);
+            @include h(30);
+            @include lh(30);
             padding: 0 12px;
           }
 
@@ -272,7 +275,7 @@
           }
           .title{
             @extend %lineElem_middle;
-            width: 5em;
+            width: 6em;
             font-weight: bold;
             text-align: right;
           }
@@ -482,13 +485,10 @@
     }
   }
   .g-footer{
-    padding: formatVal(10,rem) 0 formatVal(10,rem) formatVal(160,rem);
+    padding: formatVal(10,rem) 0;
     text-align: center;
     color: $borderColor2;
     @include fs(12);
-    @media screen and(min-width: 1500px){
-      padding-left: formatVal(210,rem);
-    }
   }
 }
 .modal {

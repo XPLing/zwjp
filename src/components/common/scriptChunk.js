@@ -1,1 +1,2 @@
-import 'bootstrap'
+import 'babel-polyfill';
+import 'bootstrap';

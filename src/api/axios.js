@@ -16,18 +16,27 @@ axios.interceptors.request.use(config => {
   removePending(config, pending); // 在一个ajax发送前执行一下取消操作
   config.cancelToken = new CancelToken((c) => {
     // 这里的ajax标识我是用请求地址&请求方式拼接的字符串，当然你可以选择其他的一些方式
-    pending.push({u: config.url + '&' + config.method, f: c});
+    pending.push({ u: config.url + '&' + config.method, f: c });
     if (config.customParam && config.customParam.cancelSource) {
       config.customParam.cancelSource.cancel = c;
     }
   });
+  var beforeSend = config.other.beforeSend;
+  if (typeof beforeSend === 'function') {
+    beforeSend(config);
+  }
   return config;
 }, error => {
   return Promise.reject(error);
 });
 // 添加响应拦截器
 axios.interceptors.response.use(res => {
+  console.log(res.config);
   removePending(res.config, pending); // 在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
+  var resCB = res.config.other.resCB;
+  if (typeof resCB === 'function') {
+    resCB(res);
+  }
   return res;
 }, err => {
   if (err && err.response) {

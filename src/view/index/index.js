@@ -2,6 +2,154 @@ import 'components/common/styleChunk';
 import 'components/common/scriptChunk';
 import 'components/index/index.scss';
 import * as util from 'js/util';
+import * as API from 'api/pcbLibrary';
+import {ERR_OK, ERR_OK_STR} from 'api/config';
+import {REQUEST} from '../../api/config';
+var modle = {
+  common: {
+    variable: {
+      ajaxBaseUrl: '../',
+      permissions: {
+        list: $('#PERMISSIONS').val(),
+        deleted: 'web:main:infoDoc:docList:delete',
+        edit: 'web:main:infoDoc:docList:edit',
+        download: 'web:main:infoDoc:docList:download',
+        detail: 'web:main:infoDoc:docList:detail'
+      }
+    },
+    alert_autoHide: function (msg, type) {
+      var mesgElem = $('.c-message');
+      mesgElem.show().find('.' + type).show().html('<strong>' + msg + '</strong>').siblings().hide();
+      mesgElem.delay(3000).fadeOut();
+    },
+    request_error: function (error) {
+      console.log(error);
+      var insertElem = error.config.other.insertElem, tableWrapper = insertElem.parents('.c-table-wrapper');
+      tableWrapper.find('.c-shadow-local-abs').removeClass('active');
+      var mesgElem = $('.c-message');
+      mesgElem.show().find('.alert-danger').show().html('<strong>' + error.message + '</strong>').siblings().hide();
+    },
+    request_error_local: function (error, param) {
+      console.log(error);
+      var insertElem = param.insertElem;
+      var mesgElem = insertElem.closest('.c-message-local');
+      mesgElem.show().find('.alert-danger').show().html('<strong>' + error.message + '</strong>').siblings().hide();
+    }
+
+  },
+  ajax: {
+    deleteTarget: function (param, insertElem) {
+      return util.request({
+        url: util.variable.ajaxUrl + '/delDoc',
+        method: 'POST',
+        contentType: 'application/json;charset=UTF-8',
+        data: JSON.stringify(param),
+        insertElem: insertElem,
+        beforeSend: modle.events.request.request_success_beforeSend,
+        success: modle.events.request.request_success_delete,
+        error: modle.common.request_error
+      });
+    },
+    list(params) {
+      return API.list({
+        params,
+        other: {
+          beforeSend: modle.events.request.request_success_beforeSend,
+          resCB: modle.events.request.request_successInit_loadData,
+          insertElem: $('#dataTable')
+        }
+      });
+    }
+  },
+  events: {
+    request: {
+      request_success_beforeSend: function (config) {
+        var mesgElem = $('.c-message');
+        if (!mesgElem.is(':hidden')) {
+          mesgElem.hide();
+        }
+        var insertElem = config.other.insertElem;
+        var tableWrapper = insertElem.parents('.c-table-wrapper');
+        tableWrapper.find('.c-shadow-local-abs').addClass('active');
+        // table.find('.tip-meg').addClass('active').children('td').text("加载中。。。");
+      },
+      request_successInit_loadData: function (res) {
+        var insertElem = res.config.other.insertElem;
+        var tableWrapper = insertElem.parents('.c-table-wrapper');
+        tableWrapper.find('.c-shadow-local-abs').removeClass('active');
+      },
+      request_success_loadData: function (data, param) {
+        var result = data.result,
+          dataTableCallback = param.dataTableCallback,
+          insertElem = param.insertElem,
+          tableDom = insertElem.parents('.c-table');
+        var tableWrapper = insertElem.parents('.c-table-wrapper');
+
+        // console.log(result);
+        // 封装返回数据
+        var returnData = {}, totalSize = result.pageSize * result.pages;
+        // returnData.draw = tableData.draw; // 这里直接自行返回了draw计数器,应该由后台返回
+        returnData.recordsTotal = totalSize; // 返回数据全部记录
+        returnData.recordsFiltered = totalSize; // 后台不实现过滤功能，每次查询均视作全部结果
+        returnData.data = result.list;
+        dataTableCallback(returnData);
+        tableWrapper.find('.c-shadow-local-abs').removeClass('active');
+        tableDom.attr('data-currentpage', data.currentPage);
+      },
+      request_success_delete: function (data, param) {
+        var result = data.result,
+          insertElem = param.insertElem,
+          tableDom = insertElem.parents('.c-table'),
+          dtd = param.dtd;
+        var tableWrapper = insertElem.parents('.c-table-wrapper'),
+          tabID = tableDom.attr('id');
+        var tableData = $('#' + tabID).data('table');
+        tableData.ajax.reload();
+        tableWrapper.find('.c-shadow-local-abs').removeClass('active');
+      }
+    },
+    setBtnLink: function (page) {
+      var dom = $('.create-btn-hook');
+      var currentPath = dom.attr('href');
+      dom.attr('href', util.setLinkHash(currentPath, 'page', page));
+    },
+    getFilter: function (data, tableData, dataTab) {
+      var param = {}, tabDom = $(tableData.table().node()),
+        searchDom = tabDom.closest('.tab-pane').find('.search-wrapper');
+      var name = $.trim($('.search-name-val').val());
+      if (name) {
+        param.name = name;
+      }
+      var labelNames = $.trim($('.search-labelNames-val').val());
+      if (labelNames) {
+        param.labelNames = labelNames;
+      }
+      var type = $.trim($('.search-type-val').val());
+      if (type) {
+        param.type = type;
+      }
+      var noFirst = dataTab.attr('nofirst');
+      var filterTimeStart = $.trim($('#startTime').val());
+      var filterTimeEnd = $.trim($('#endTime').val());
+      if (!noFirst) {
+        dataTab.attr('nofirst', true);
+        filterTimeStart = $.trim($('#startTime').val()) || util.formatDate(new Date(new Date().getTime() - 3 * 30 * 24 * 3600 * 1000), 'yyyy-MM-dd');
+        filterTimeEnd = $.trim($('#endTime').val()) || util.formatDate(new Date(), 'yyyy-MM-dd');
+      }
+
+      if (filterTimeStart && filterTimeEnd) {
+        param.lastModifiedTimeStart = filterTimeStart;
+        param.lastModifiedTimeEnd = filterTimeEnd;
+      }
+      param.orderName = tableData.column(data.order[0].column).dataSrc();
+      param.orderRule = data.order[0].dir;
+      var urlPage = util.getUrlParameter('page', decodeURIComponent(window.location.hash).substr(1), '&');
+      param.page = urlPage || tableData.page() + 1;
+      return param;
+    }
+  }
+};
+
 
 import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTablesChunk').then((res) => {
   $(() => {
@@ -17,12 +165,25 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
         var tableData = this.api();
         var param = modle.events.getFilter(data, tableData, $('#dataTable'));
         // ajax请求数据
-        modle.ajax.loadData(param, $('#dataTable').find('tbody'), callback);
+        var callbackParam = {
+          insertElem: $('#dataTable').find('tbody'),
+          dataTableCallback: callback
+        };
+        modle.ajax.list(param).then(res => {
+          if (res.code == ERR_OK) {
+            modle.events.request.request_success_loadData(res, callbackParam);
+          } else {
+            return Promise.reject(res);
+          }
+        }).catch(e => {
+          modle.common.request_error(e);
+        });
+        // modle.ajax.loadData(param, $('#dataTable').find('tbody'), callback);
       },
       rowId: 'id',
       columns: [
         {
-          'width': '42%',
+          'width': '50%',
           'class': 'hasFlag',
           'data': 'name',
           'render': function (data, type, row, meta) {
@@ -34,7 +195,7 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
           }
         },
         {
-          'width': '6%',
+          'width': '10%',
           'data': 'type',
           'render': function (data, type, row, meta) {
             var typeValue = '';
@@ -57,6 +218,9 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
               case 10:
                 typeValue = '其他';
                 break;
+              default:
+                typeValue = 'EDA';
+                break;
             }
             return typeValue;
           }
@@ -69,15 +233,16 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
           }
         },
         {
-          'width': '10%',
-          'data': 'lastModifiedTime',
+          'width': '12%',
+          'data': 'modifiedTime',
           'render': function (data, type, row, meta) {
             return util.formatDate(data, 'yyyy-MM-dd hh:mm:ss');
           }
         },
         {
+          'visible': false,
           'width': '5%',
-          'data': 'lastModifiedByName'
+          'data': 'modifiedTime'
         },
         {
           'width': '8%',
@@ -87,7 +252,7 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
           }
         },
         {
-          'width': '19%',
+          'width': '5%',
           'data': null,
           'orderable': false,
           'defaultContent': '',
@@ -97,7 +262,7 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
             var api = new $.fn.dataTable.Api(meta.settings),
               page = api.page() + 1;
             var path = row.path ? '/pdf/preview/' + row.path.replace('.', '_') : '';
-            var downPath = row.path ? '/pdf/download/' + row.path.replace('.', '_') : '';
+            var downPath = row.guid ? `${REQUEST.url}/PcbLibrary/down?guid=${row.guid}` : '';
             var permissionsOpt = modle.common.variable.permissions;
             var PERMISSIONS = permissionsOpt.list ? permissionsOpt.list.substring(1, permissionsOpt.list.length - 1) : '';
             var hasDelete = PERMISSIONS.indexOf(permissionsOpt.deleted),
@@ -119,6 +284,7 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
                 dom += '<a download="' + row.name + '" class="btn btn-success btn-xs" href="' + downPath + '">下载</a>';
               }
             }
+            dom += '<a target="_blank" download="' + row.name + '" class="btn btn-success btn-xs" href="' + downPath + '">下载</a>';
             return dom;
           }
         }
@@ -207,7 +373,6 @@ import(/* webpackChunkName: "dataTables" */ 'components/lib/dataTables/dataTable
 
 import(/* webpackChunkName: "laydate" */ 'components/lib/laydate/laydateChunk').then((laydate) => {
   $(() => {
-    console.log(laydate);
     // 设置laydate css加载路径
     util.laydate.setPath(laydate);
     // laydate初始化
@@ -252,157 +417,6 @@ import(/* webpackChunkName: "laydate" */ 'components/lib/laydate/laydateChunk').
   });
 });
 
-var modle = {
-  common: {
-    variable: {
-      ajaxBaseUrl: '../',
-      permissions: {
-        list: $('#PERMISSIONS').val(),
-        deleted: 'web:main:infoDoc:docList:delete',
-        edit: 'web:main:infoDoc:docList:edit',
-        download: 'web:main:infoDoc:docList:download',
-        detail: 'web:main:infoDoc:docList:detail'
-      }
-    },
-    alert_autoHide: function (msg, type) {
-      var mesgElem = $('.c-message');
-      mesgElem.show().find('.' + type).show().html('<strong>' + msg + '</strong>').siblings().hide();
-      mesgElem.delay(3000).fadeOut();
-    },
-    request_error: function (error, param) {
-      console.log(error);
-      var insertElem = param.insertElem, tableWrapper = insertElem.parents('.c-table-wrapper');
-      tableWrapper.find('.c-shadow-local-abs').removeClass('active');
-      var mesgElem = $('.c-message');
-      mesgElem.show().find('.alert-danger').show().html('<strong>' + error.message + '</strong>').siblings().hide();
-    },
-    request_error_local: function (error, param) {
-      console.log(error);
-      var insertElem = param.insertElem;
-      var mesgElem = insertElem.closest('.c-message-local');
-      mesgElem.show().find('.alert-danger').show().html('<strong>' + error.message + '</strong>').siblings().hide();
-    }
-
-  },
-  ajax: {
-    loadData: function (param, insertElem, dataTableCallback) {
-      return util.request({
-        url: util.variable.ajaxUrl + '/listDocs',
-        data: param,
-        dataTableCallback: dataTableCallback,
-        insertElem: insertElem,
-        beforeSend: modle.events.request.request_success_beforeSend,
-        success: modle.events.request.request_success_loadData,
-        error: modle.common.request_error
-      });
-    },
-    deleteTarget: function (param, insertElem) {
-      return util.request({
-        url: util.variable.ajaxUrl + '/delDoc',
-        method: 'POST',
-        contentType: 'application/json;charset=UTF-8',
-        data: JSON.stringify(param),
-        insertElem: insertElem,
-        beforeSend: modle.events.request.request_success_beforeSend,
-        success: modle.events.request.request_success_delete,
-        error: modle.common.request_error
-      });
-    }
-  },
-  events: {
-    request: {
-      request_success_beforeSend: function (param) {
-        var mesgElem = $('.c-message');
-        if (!mesgElem.is(':hidden')) {
-          mesgElem.hide();
-        }
-        var insertElem = param.insertElem;
-        var tableWrapper = insertElem.parents('.c-table-wrapper');
-        tableWrapper.find('.c-shadow-local-abs').addClass('active');
-        // table.find('.tip-meg').addClass('active').children('td').text("加载中。。。");
-      },
-      request_successInit_loadData: function (data, param) {
-        var insertElem = param.insertElem;
-        var mesgElem = insertElem.closest('.c-message-local');
-        mesgElem.hide();
-      },
-      request_success_loadData: function (data, param) {
-        var result = data.result,
-          dataTableCallback = param.dataTableCallback,
-          insertElem = param.insertElem,
-          tableDom = insertElem.parents('.c-table'),
-          dtd = param.dtd;
-        var tableWrapper = insertElem.parents('.c-table-wrapper');
-
-        // console.log(result);
-        // 封装返回数据
-        var returnData = {};
-        // returnData.draw = tableData.draw; // 这里直接自行返回了draw计数器,应该由后台返回
-        returnData.recordsTotal = data.totalSize; // 返回数据全部记录
-        returnData.recordsFiltered = data.totalSize; // 后台不实现过滤功能，每次查询均视作全部结果
-        returnData.data = result;
-        dataTableCallback(returnData);
-
-        tableWrapper.find('.c-shadow-local-abs').removeClass('active');
-        tableDom.attr('data-currentpage', data.currentPage);
-      },
-      request_success_delete: function (data, param) {
-        var result = data.result,
-          insertElem = param.insertElem,
-          tableDom = insertElem.parents('.c-table'),
-          dtd = param.dtd;
-        var tableWrapper = insertElem.parents('.c-table-wrapper'),
-          tabID = tableDom.attr('id');
-        var tableData = $('#' + tabID).data('table');
-        tableData.ajax.reload();
-        tableWrapper.find('.c-shadow-local-abs').removeClass('active');
-      }
-    },
-    setBtnLink: function (page) {
-      var dom = $('.create-btn-hook');
-      var currentPath = dom.attr('href');
-      dom.attr('href', util.setLinkHash(currentPath, 'page', page));
-    },
-    getFilter: function (data, tableData, dataTab) {
-      var param = {}, tabDom = $(tableData.table().node()),
-        searchDom = tabDom.closest('.tab-pane').find('.search-wrapper');
-      var name = $.trim($('.search-name-val').val());
-      if (name) {
-        param.name = name;
-      }
-      var labelNames = $.trim($('.search-labelNames-val').val());
-      if (labelNames) {
-        param.labelNames = labelNames;
-      }
-      var lastModifiedByName = $.trim($('.search-lastModifiedByName-val').val());
-      if (lastModifiedByName) {
-        param.lastModifiedByName = lastModifiedByName;
-      }
-      var type = $.trim($('.search-type-val').val());
-      if (type) {
-        param.type = type;
-      }
-      var noFirst = dataTab.attr('nofirst');
-      var filterTimeStart = $.trim($('#startTime').val());
-      var filterTimeEnd = $.trim($('#endTime').val());
-      if (!noFirst) {
-        dataTab.attr('nofirst', true);
-        filterTimeStart = $.trim($('#startTime').val()) || util.formatDate(new Date(new Date().getTime() - 3 * 30 * 24 * 3600 * 1000), 'yyyy-MM-dd');
-        filterTimeEnd = $.trim($('#endTime').val()) || util.formatDate(new Date(), 'yyyy-MM-dd');
-      }
-
-      if (filterTimeStart && filterTimeEnd) {
-        param.lastModifiedTimeStart = filterTimeStart;
-        param.lastModifiedTimeEnd = filterTimeEnd;
-      }
-      param.orderName = tableData.column(data.order[0].column).dataSrc();
-      param.orderRule = data.order[0].dir;
-      var urlPage = util.getUrlParameter('page', decodeURIComponent(window.location.hash).substr(1), '&');
-      param.page = urlPage || tableData.page() + 1;
-      return param;
-    }
-  }
-};
 
 $(document).ready(function () {
   // 页面ui初始化

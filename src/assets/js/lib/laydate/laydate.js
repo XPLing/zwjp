@@ -1832,7 +1832,6 @@
 
   //暴露lay
   window.lay = window.lay || lay;
-
   //加载方式
   isLayui ? (
     laydate.ready()
@@ -1844,9 +1843,8 @@
     (typeof define === 'function' && define.amd) ? define(function(){ //requirejs加载
       return laydate;
     }) : function(){ //普通script标签加载
-      module.exports = laydate;
-      // laydate.ready();
-      // window.laydate = laydate
+      laydate.ready();
+      window.laydate = laydate
     }()
   );
 
