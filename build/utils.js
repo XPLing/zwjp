@@ -30,6 +30,7 @@ function getEntry2(globPath, noFolder) {
     }
     entryName = filesPath + '/' + filesname;
     entries[entryName] = entry;
+
   });
   return entries;
 }

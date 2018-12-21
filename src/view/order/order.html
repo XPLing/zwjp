@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--[if IE 8 ]>
+<html lang="en" class="ie8">
+<![endif]-->
+<head>
+  <%= require("ejs-loader!components/common/head.ejs")({refresh:3600}) %>
+  <title>云创造物 | KBOM订单看板</title>
+</head>
+<body>
+<%= require("ejs-loader!components/base/alert/alert.ejs")({className:'c-message'}) %>
+<div class="g-wrap">
+  <!--<%= require("ejs-loader!components/common/header/header.ejs")({userInfoFlag:false}) %>-->
+  <div class="g-main">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">订单看板</h1>
+      </div>
+      <div class="panel-body">
+        <div class="total-statistic">
+          <p class="item" id="todayStatistic">
+            当日订单数【<span class="count">29</span>】 成交额【<span class="amount"></span>万】;
+          </p>
+          <p class="item" id="monthStatistic">
+            近30天订单单数【<span class="count">29</span>】 成交额【<span  class="amount"></span>万】;
+          </p>
+          <p class="item" id="sumStatistic">
+            累计订单数【<span class="count">29</span>】 成交额【<span class="amount"></span>万】
+          </p>
+        </div>
+        <div class="cont-wrap">
+          <div class="left">
+            <div class="chunk chunk-table">
+              <!--<div class="search-wrapper">-->
+              <!--<form class="c-search-form">-->
+              <!--<div class="form-item name">-->
+              <!--<label class="title">文档名称：</label>-->
+              <!--<input type="text" class="search-name-val"/>-->
+              <!--</div>            -->
+              <!--<div class="form-item btnbox">-->
+              <!--<button type="button" class="btn btn-item search-submit-btn">查询</button>-->
+              <!--<button type="reset" class="btn btn-item search-reset-btn">重置</button>-->
+              <!--</div>-->
+              <!--</form>-->
+              <!--</div>-->
+              <!--<div class="operate-wrapper">-->
+              <!--</div>-->
+              <div class="c-table-wrapper">
+                <div class="c-shadow-local-abs">
+                  <div class="c-center-ta">
+                    <div class="c-center-tc">
+                      <div class="c-center-cont">
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="c-table-custom">
+                  <div class="table-header">
+                    <div class="tr thead">
+                      <div class="th w-5">订单编号</div>
+                      <div class="th w-0">客户代码</div>
+                      <div class="th w-0">客户简称</div>
+                      <div class="th w-5">品名</div>
+                      <div class="th w-0">数量</div>
+                      <div class="th w-0">下单时间</div>
+                      <!--<div class="th w-0">行业</div>-->
+                      <!--<div class="th">订单结构</div>-->
+                      <!--<div class="th">订单类型</div>-->
+                    </div>
+                  </div>
+                  <div class="table-cont slider swiper-container">
+                    <div class="swiper-wrapper" id="dataTable">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="chunk chart">
+              <div class="c-chart" id="successfulTrade"></div>
+            </div>
+          </div>
+          <div class="right">
+            <div class="wrapper">
+              <div class="chunk panel panel-default">
+                <div class="panel-heading">
+                  <h1 class="panel-title">订单类型</h1>
+                </div>
+                <div class="panel-body">
+                  <div class="c-chart" id="orderType"></div>
+                </div>
+              </div>
+              <div class="chunk panel panel-default">
+                <div class="panel-heading">
+                  <h1 class="panel-title">订单结构</h1>
+                </div>
+                <div class="panel-body">
+                  <div class="c-chart" id="orderStructure"></div>
+                </div>
+              </div>
+              <div class="chunk panel panel-default">
+                <div class="panel-heading">
+                  <h1 class="panel-title">行业</h1>
+                </div>
+                <div class="panel-body">
+                  <div class="c-chart big" id="trade"></div>
+                </div>
+              </div>
+            </div>
+            <!--<div class="chunk">-->
+              <!--<div class="c-chart" id="orderStructure"></div>-->
+            <!--</div>-->
+            <!--<div class="chunk">-->
+              <!--<div class="c-chart" id="consultation"></div>-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= require("ejs-loader!components/common/footer/footer.ejs")()%>
+</div>
+<%= require("ejs-loader!components/common/footerScript.ejs")() %>
+
+</body>
+</html>

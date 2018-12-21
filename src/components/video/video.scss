@@ -1,0 +1,89 @@
+@import "~scss/compile";
+.g-wrap{
+  .g-header{
+    border: none;
+    .navbar {
+      .navbar-header {
+        width: auto;
+        padding: formatVal(22,rem) formatVal(19,rem) 0 0;
+        float: right;
+        .navbar-brand {
+          margin-left: formatVal(25, rem);
+          img {
+            @include w(127);
+            @include h(33);
+          }
+
+        }
+      }
+    }
+  }
+  .g-main{
+    padding: formatVal(5, rem) formatVal(30,rem) 0 formatVal(44,rem);
+    .titlebox{
+      color: $color-theme;
+      margin-bottom: formatVal(28,rem);
+      line-height: 1;
+      .title{
+        line-height: 1;
+        @include fs(30);
+        margin-top: 0;
+        margin-bottom: formatVal(13,rem);
+      }
+      .subtitle{
+        @include fs(14);
+      }
+    }
+    .desc{
+      display: flex;
+      flex-flow: nowrap;
+      align-items: flex-end;
+      .info{
+        flex: 0 0 formatVal(318,rem);
+        margin-right: formatVal(28,rem);
+        .text{
+          margin-bottom: formatVal(23,rem);
+          @include fs(12);
+          line-height: 1.8em;
+          color: $color-gray-7A;
+        }
+        .cover{
+          display: flex;
+          justify-content: space-around;
+          .item{
+            flex: 0 0 formatVal(104,rem);
+            img{
+              width: 100%;
+            }
+          }
+        }
+      }
+      .video{
+        flex: 1;
+        video{
+          display: block;
+          width: 100%;
+          @include h(194);
+        }
+      }
+    }
+  }
+  .g-footer{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    @include h(24);
+    padding: 0;
+    display: flex;
+    .left{
+      flex: 0 0 formatVal(187,rem);
+      background-color: $color-gray-7A;
+    }
+    .right{
+      flex: 1;
+      background-color: $color-theme;
+    }
+  }
+}

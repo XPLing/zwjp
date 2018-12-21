@@ -138,7 +138,7 @@
       .c-center-cont {
         color: #666;
         i {
-          @include fs(22);
+          ;
         }
       }
     }
@@ -705,6 +705,73 @@
       &.active {
         color: $orange;
         border: 1px solid $orange;
+      }
+    }
+  }
+}
+
+.c-table-custom{
+  .table-header,.table-cont{
+    border: 1px solid $loginMainBgColor;
+    .tr{
+      display: flex;
+      flex-flow: nowrap;
+      .th,.td{
+        word-break: break-all;
+        flex: 1;
+        padding: formatVal(5,rem);
+        &[class^="w-"], &[class*=" w-"]{
+          @extend %ellipsis;
+        }
+        &.w-20{
+          flex: 0 0 formatVal(350,rem);
+        }
+        &.w-15{
+          flex: 0 0 formatVal(250,rem);
+        }
+        &.w-10{
+          flex: 0 0 formatVal(200,rem);
+        }
+        &.w-8{
+          flex: 0 0 formatVal(150,rem);
+        }
+        &.w-5{
+          flex: 0 0 formatVal(100,rem);
+        }
+        &.w-3{
+          flex: 0 0 formatVal(60,rem);
+        }
+      }
+      .th{
+        font-weight: bold;
+        &+.th{
+          border-left: 1px solid $loginMainBgColor;
+        }
+      }
+      .td{
+        &+.td{
+          border-left: 1px solid $loginMainBgColor;
+        }
+      }
+    }
+  }
+  .table-header{
+    &+.tr{
+      border-top: 1px solid $loginMainBgColor;
+    }
+  }
+  .table-cont{
+    &.slider{
+      overflow: hidden;
+      .swiper-slide{
+        &+.swiper-slide{
+          border-top: 1px solid $loginMainBgColor;
+        }
+      }
+    }
+    &.no-slider{
+      &+.tr{
+        border-top: 1px solid $loginMainBgColor;
       }
     }
   }

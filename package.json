@@ -19,6 +19,7 @@
     "datatables.net": "^1.10.19",
     "datatables.net-bs": "^1.10.19",
     "datatables.net-dt": "^1.10.19",
+    "echarts": "^3.7.0",
     "exports-loader": "^0.7.0",
     "expose-loader": "^0.7.5",
     "font-awesome": "^4.7.0",
@@ -27,6 +28,7 @@
     "jsonp": "^0.2.1",
     "layui-laydate": "5.0.8",
     "querystring": "^0.2.0",
+    "swiper": "^4.4.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

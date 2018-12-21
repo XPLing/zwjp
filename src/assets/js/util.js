@@ -675,6 +675,7 @@ var util = {
       opt: {
         dom: '<\'table-filter\' f><\'table-main clearfix\'<\'table-wrapper\' t>><\'table-page clearfix\' ip>r',
         destroy: true,
+        stateSave: true,
         processing: false,
         lengthChange: false,
         autoWidth: false,

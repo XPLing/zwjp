@@ -4,7 +4,7 @@ export let pending = []; //  声明一个数组用于存储每个ajax请求的�
 let CancelToken = axios.CancelToken;
 export let removePending = (config, obj) => {
   for (let p in obj) {
-    if (obj[p].u === config.url + '&' + config.method) { // 当当前请求在数组中存在时执行函数体
+    if (obj[p].u === config.url + '&' + config.method && !config.other.concurrent) { // 当当前请求在数组中存在时执行函数体
       obj[p].f(); //  执行取消操作
       obj.splice(p, 1); //  把这条记录从数组中移除
     }
@@ -31,7 +31,7 @@ axios.interceptors.request.use(config => {
 });
 // 添加响应拦截器
 axios.interceptors.response.use(res => {
-  console.log(res.config);
+  // console.log(res.config);
   removePending(res.config, pending); // 在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
   var resCB = res.config.other.resCB;
   if (typeof resCB === 'function') {

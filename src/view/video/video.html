@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--[if IE 8 ]>
+<html lang="en" class="ie8">
+<![endif]-->
+<head>
+  <%= require("ejs-loader!components/common/head.ejs")({refresh:false}) %>
+  <title>云创造物 | KBOM业务介绍</title>
+</head>
+<body>
+<%= require("ejs-loader!components/base/alert/alert.ejs")({className:'c-message'}) %>
+<div class="g-wrap">
+  <%= require("ejs-loader!components/common/header/header.ejs")({userInfoFlag:false}) %>
+  <div class="g-main">
+    <div class="titlebox">
+      <h1 class="title">BOM技术服务与供应链服务</h1>
+      <div class="subtitle">用产品化思维做BOM优化与供应链服务，高效攻克量产难关</div>
+    </div>
+    <div class="desc">
+      <div class="info">
+        <div class="text">
+          BOM优化+物料 2 Source 寻找和认证，让产品质量升级 <br>
+          整合连接供应商5000+，库存物料200万+，100%原厂品质保证 <br>
+          平均10年经验团队成员，BOM配单更专业 <br>
+          数字化技术匹配物料，BOM配单更高效<br>
+          线上7*24h服务模式，采购更轻松
+        </div>
+        <div class="cover">
+          <div class="item">
+            <img src="<%= require('./img_1.png') %>">
+          </div>
+          <div class="item">
+            <img src="<%= require('./img_2.png') %>">
+          </div>
+          <div class="item">
+            <img src="<%= require('./img_3.png') %>">
+          </div>
+        </div>
+      </div>
+      <div class="video">
+        <video muted src="http://cscfilemv.kingbrother.com/file/bom/03%20%E7%89%87%E5%A4%B4.mp4" controls autoplay="true" loop></video>
+      </div>
+    </div>
+  </div>
+  <footer class="g-footer">
+    <div class="left"></div>
+    <div class="right"></div>
+  </footer>
+</div>
+<%= require("ejs-loader!components/common/footerScript.ejs")() %>
+</body>
+</html>

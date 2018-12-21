@@ -8,6 +8,7 @@ module.exports = {
   globals: {
     '$': true,
     'jQuery': true,
+    'echarts': true,
     'moxie': true
   },
   env: {
@@ -49,6 +50,7 @@ module.exports = {
     'handle-callback-err': 'off',
     'camelcase': 0,
     'no-unneeded-ternary': 0,
-    'no-useless-return': 0
+    'no-useless-return': 0,
+    'space-in-parens': 0
   }
 };
