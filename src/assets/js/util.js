@@ -1,3 +1,5 @@
+import * as API from 'api/global';
+
 var browser = {
   versions: (function () {
     var u = navigator.userAgent, app = navigator.appVersion;
@@ -17,8 +19,7 @@ var browser = {
   language: (navigator.browserLanguage || navigator.language).toLowerCase()
 };
 
-
-function getbrowserType() {
+function getbrowserType () {
   if (browser.versions.mobile) {
     var ua = navigator.userAgent.toLowerCase();// 获取判断用的对象
     if (ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -45,13 +46,13 @@ function getbrowserType() {
   }
 };
 
-function padLeftZero(str) {
+function padLeftZero (str) {
   return ('00' + str).substr(str.length);
 }
 
-
 var util = {
   variable: {
+    originWidth: 76.8,
     click: browser.versions.mobile ? 'touchstart' : 'click',
     downAppUrl: '',
     scheme: '',
@@ -1025,9 +1026,35 @@ var util = {
       str = str.substr(0, limit) + '...';
     }
     return str;
+  },
+  calculateWH (num) {
+    var windowW = parseInt(window.outerWidth || window.innerWidth || window.screen.width);
+    return num / util.variable.originWidth * windowW;
+  },
+  provide: {
+    getPageInfo: function (params, insertElem) {
+      return API.pagesInfo({
+        params,
+        other: {}
+      });
+    },
+    events: {
+      request_success_loadData: function (res) {
+        var result = res.resData.result, config = res.config.other;
+        $.each(result, function (index, val) {
+          var title = val.name, url = val.url, pathName = window.location.pathname, reg = new RegExp(pathName);
+          if (reg.test(url)) {
+            $('title').text(title);
+          }
+        });
+      },
+      request_error: function (error) {
+        var mesgElem = $('.c-message');
+        mesgElem.show().find('.alert-danger').show().html('<strong>' + error.message + '</strong>').siblings().hide();
+      }
+    }
   }
 };
-
 
 module.exports = util;
 

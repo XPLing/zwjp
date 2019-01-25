@@ -11,8 +11,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const env = process.env.NODE_ENV === 'testing'
-  ? require('../config/test.env')
+const env = process.env.NODE_ENV === 'production_testing'
+  ? require('../config/prod.test.env')
   : require('../config/prod.env');
 var entrise = [];
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {

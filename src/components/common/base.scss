@@ -88,11 +88,12 @@
           }
         }
         .navbar-brand {
-          margin-left: formatVal(25, rem);
-          @include lh(80);
-          @include h(80);
+          @include lh(33);
+          @include h(33);
+          font-size: 0;
           img {
-            @include w(180);
+            @include w(127);
+            @include h(33);
           }
 
         }

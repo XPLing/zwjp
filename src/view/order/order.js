@@ -177,16 +177,19 @@ var modle = {
           fragDom.appendChild(item);
         });
         insertElem.append(fragDom);
-        var mySwiper = new Swiper('.swiper-container', {
+        var swiperOpt = {
           autoplay: {
             disableOnInteraction: false,
             delay: 2000 // 1秒切换一次
           },
           direction: 'vertical', // 垂直切换选项
-          loop: true, // 循环模式选项
           slidesPerView: 'auto',
-          noSwiping: true
-        });
+          noSwiping: false
+        };
+        if (trData.length > 8) {
+          swiperOpt.loop = true;
+        }
+        var mySwiper = new Swiper('.swiper-container', swiperOpt);
       },
       request_success_orderListStatistics: function (res) {
         var data = res.resData.result,
@@ -322,7 +325,7 @@ var modle = {
   }
 };
 
-import(/* webpackChunkName: "echarts" */ 'echarts').then((echarts) => {
+import(/* webpackChunkName: "order_echarts" */ 'echarts').then((echarts) => {
   var chartOption = {
     color: ['#3398DB'],
     tooltip: {
@@ -528,7 +531,7 @@ import(/* webpackChunkName: "echarts" */ 'echarts').then((echarts) => {
 
 });
 
-import(/* webpackChunkName: "laydate" */ 'components/lib/laydate/laydateChunk').then((laydate) => {
+import(/* webpackChunkName: "order_laydate" */ 'components/lib/laydate/laydateChunk').then((laydate) => {
   $(() => {
     // 设置laydate css加载路径
     util.laydate.setPath(laydate);
@@ -578,6 +581,13 @@ $(document).ready(function () {
 
   // 页面ui初始化
   util.basic.init();
+  // 获取页面信息
+  util.provide.getPageInfo().then((res) => {
+    util.provide.events.request_success_loadData(res);
+  }).catch(e => {
+    var error = e.error || e, config = e.config || null;
+    util.provide.events.request_error(error, config);
+  });
   // 下拉框选择信息修改
   $('.c-select-menu').on('click', 'a', function () {
     var _this = $(this);

@@ -2,7 +2,7 @@ import jsonp from 'assets/js/jsonp';
 import {commonParams, options, REQUEST} from './config';
 import axios from './axios';
 
-const debug = process.env.NODE_ENV !== 'production';
+const debug = !/production/.test(process.env.NODE_ENV);
 
 
 export function list(obj) {

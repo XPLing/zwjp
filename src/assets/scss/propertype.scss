@@ -19,7 +19,7 @@
   width: 10em;
 }
 
-.f-blod {
+.f-bold {
   font-weight: bold !important;
 }
 
@@ -774,5 +774,11 @@
         border-top: 1px solid $loginMainBgColor;
       }
     }
+  }
+  .nothing{
+    display: none;
+    text-align: center;
+    border: 1px solid $loginMainBgColor;
+    border-top: none;
   }
 }

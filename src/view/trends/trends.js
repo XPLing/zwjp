@@ -157,16 +157,19 @@ var modle = {
           fragDom.appendChild(item);
         });
         insertElem.append(fragDom);
-        var mySwiper = new Swiper('.swiper-container', {
+        var swiperOpt = {
           autoplay: {
             disableOnInteraction: false,
             delay: 2000 // 1秒切换一次
           },
           direction: 'vertical', // 垂直切换选项
-          loop: true, // 循环模式选项
           slidesPerView: 'auto',
-          noSwiping: true
-        });
+          noSwiping: false
+        };
+        if (trData.length > 8) {
+          swiperOpt.loop = true;
+        }
+        var mySwiper = new Swiper('.swiper-container', swiperOpt);
       },
       request_success_delete: function (data, param) {
         var result = data.result,
@@ -296,7 +299,7 @@ var modle = {
   }
 };
 
-import(/* webpackChunkName: "Echarts" */ 'echarts').then((echarts) => {
+import(/* webpackChunkName: "trends_echarts" */ 'echarts').then((echarts) => {
   var chartOption = {
     grid: {
       left: '0',
@@ -457,7 +460,7 @@ import(/* webpackChunkName: "Echarts" */ 'echarts').then((echarts) => {
         name: '客户类型',
         type: 'pie',
         radius: '100%',
-        center: ['30%', '50%'],
+        center: ['22%', '50%'],
         label: {
           normal: {
             position: 'inner',
@@ -485,7 +488,7 @@ import(/* webpackChunkName: "Echarts" */ 'echarts').then((echarts) => {
 
 });
 
-import(/* webpackChunkName: "Laydate" */ 'components/lib/laydate/laydateChunk').then((laydate) => {
+import(/* webpackChunkName: "trends_laydate" */ 'components/lib/laydate/laydateChunk').then((laydate) => {
   $(() => {
     // 设置laydate css加载路径
     util.laydate.setPath(laydate);
@@ -534,6 +537,13 @@ import(/* webpackChunkName: "Laydate" */ 'components/lib/laydate/laydateChunk').
 $(document).ready(function () {
   // 页面ui初始化
   util.basic.init();
+  // 获取页面信息
+  util.provide.getPageInfo().then((res) => {
+    util.provide.events.request_success_loadData(res);
+  }).catch(e => {
+    var error = e.error || e, config = e.config || null;
+    util.provide.events.request_error(error, config);
+  });
   // 下拉框选择信息修改
   $('.c-select-menu').on('click', 'a', function () {
     var _this = $(this);

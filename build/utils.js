@@ -139,7 +139,7 @@ exports.htmlPlugins = function () {
   var arr = [];
   for (var pathname in pages) {
     // 配置生成的html文件，定义路径等
-    let chunks = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'production-dev' ? ['manifest','common','vendor',pathname.replace(/^view\//, '')] : [pathname.replace(/^view\//, '')];
+    let chunks = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'production_testing' ? ['manifest','common','vendor',pathname.replace(/^view\//, '')] : [pathname.replace(/^view\//, '')];
     var conf = {
       filename: pathname + '.html',
       template: pages[pathname], // 模板路径
@@ -151,7 +151,7 @@ exports.htmlPlugins = function () {
     if (/index.html/.test(path)) {
       conf.filename = 'index.html';
     }
-    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'production-dev') {
+    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'production_testing') {
       conf = merge(conf, {
         minify: {
           removeComments: true,

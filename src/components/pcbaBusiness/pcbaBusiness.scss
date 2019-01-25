@@ -1,0 +1,80 @@
+@import "~scss/compile";
+.g-wrap{
+  @include fs(12);
+  .swiper-pagination-progress{
+    position: relative;
+    height: 5px;
+    .progress-bar{
+      position: absolute;
+      left: 0;
+      top: 0;
+      border: 0;
+      z-index: 5;
+      background-color: #4788eb;
+      animation-fill-mode: backwards;
+      &.play{
+        animation:progressBar linear 20s infinite;
+      }
+    }
+    &.active{
+
+    }
+  }
+  .g-main{
+    padding: 0 20px;
+    .swiper-container-global{
+      .swiper-slide{
+        width: 100%;
+      }
+    }
+    .panel{
+      .panel-heading{
+        h1{
+          @include fs(18);
+        }
+      }
+      .panel-body{
+        .c-table-custom{
+          .table-cont, .nothing{
+            @include h(170);
+          }
+          .nothing{
+           @include lh(170);
+          }
+        }
+        .cont-wrap{
+          display: block;
+          .c-chart{
+            width: 100%;
+            @include h(180);
+          }
+          .c-table-wrapper{
+            margin: 0;
+            .swiper-slide{
+              height: auto;
+              position: relative!important;
+            }
+          }
+          .chunk{
+            &+.chunk{
+              margin-top: formatVal(5,rem);
+            }
+            &.chart{
+              .statistic{
+                font-weight: bold;
+                @include fs(14);
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+}
+@keyframes progressBar
+{
+  from {width: 0;}
+  to {width:100%;}
+}

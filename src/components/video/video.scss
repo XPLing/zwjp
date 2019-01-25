@@ -7,14 +7,6 @@
         width: auto;
         padding: formatVal(22,rem) formatVal(19,rem) 0 0;
         float: right;
-        .navbar-brand {
-          margin-left: formatVal(25, rem);
-          img {
-            @include w(127);
-            @include h(33);
-          }
-
-        }
       }
     }
   }
@@ -26,12 +18,12 @@
       line-height: 1;
       .title{
         line-height: 1;
-        @include fs(30);
+        @include fs_rem(30);
         margin-top: 0;
         margin-bottom: formatVal(13,rem);
       }
       .subtitle{
-        @include fs(14);
+        @include fs_rem(14);
       }
     }
     .desc{
@@ -43,7 +35,7 @@
         margin-right: formatVal(28,rem);
         .text{
           margin-bottom: formatVal(23,rem);
-          @include fs(12);
+          @include fs_rem(11);
           line-height: 1.8em;
           color: $color-gray-7A;
         }

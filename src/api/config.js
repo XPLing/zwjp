@@ -18,6 +18,6 @@ export let removePending = (config, obj) => {
 export const ERR_OK = 200;
 export const ERR_OK_STR = 'ok';
 export const REQUEST = {
-  url: process.env.NODE_ENV === 'development' ? 'http://service.test.kingbrother.com:8082' : 'http://service.test.kingbrother.com:8082'
+  url: process.env.NODE_ENV === 'production_testing' ? 'http://service.test.kingbrother.com:8082' : 'http://service2.kingbrother.com:8082'
 };
 

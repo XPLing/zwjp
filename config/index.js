@@ -3,7 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path');
-
+const isTest = process.env.NODE_ENV === 'production_testing';
 module.exports = {
   dev: {
     // Paths
@@ -12,10 +12,18 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://service.test.kingbrother.com:8082', //设置调用接口域名和端口号别忘了加http
+        target: 'http://localhost:8787', //设置调用接口域名和端口号别忘了加http http://service.test.kingbrother.com:8082
         changeOrigin: true,
         pathRewrite: {
           // '^/api': '/' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
+          // // 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 代理后地址栏显示/
+        }
+      },
+      '/request': {
+        target: 'http://localhost:8787', //设置调用接口域名和端口号别忘了加http http://service.test.kingbrother.com:8082
+        changeOrigin: true,
+        pathRewrite: {
+          '^/request': '/' //这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
           // // 比如我要调用'http://0.0:300/user/add'，直接写‘/api/user/add’即可 代理后地址栏显示/
         }
       }
@@ -57,7 +65,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: isTest ? path.resolve(__dirname, '../testing') : path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/zwjp/',
 

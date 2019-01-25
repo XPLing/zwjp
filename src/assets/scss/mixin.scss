@@ -7,6 +7,9 @@
     font-size: $px * 3 + px;
   }
 }
+@mixin fs_rem($px) {
+  font-size: $px/$originW + rem;
+}
 
 @mixin lh($px) {
   line-height: $px/$originW + rem;

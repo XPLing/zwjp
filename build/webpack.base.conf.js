@@ -25,7 +25,7 @@ module.exports = {
     path: config.build.assetsRoot,
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
-    publicPath: process.env.NODE_ENV === 'production'
+    publicPath: /production/.test(process.env.NODE_ENV)
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath,
     libraryTarget: 'umd'

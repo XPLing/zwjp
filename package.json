@@ -8,9 +8,9 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
-    "test": "npm run unit",
+    "test": "cross-env NODE_ENV=production_testing node build/build.js",
     "lint": "eslint --ext .js,.vue src test/unit",
-    "build": "node build/build.js"
+    "build": "cross-env NODE_ENV=production node build/build.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -27,6 +27,7 @@
     "js-base64": "^2.4.5",
     "jsonp": "^0.2.1",
     "layui-laydate": "5.0.8",
+    "lodash": "^4.17.11",
     "querystring": "^0.2.0",
     "swiper": "^4.4.2",
     "vue": "^2.5.2",
@@ -49,6 +50,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.0",
     "ejs-loader": "^0.3.1",
     "eslint": "^4.15.0",
