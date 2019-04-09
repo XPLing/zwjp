@@ -515,71 +515,71 @@ import(/* webpackChunkName: "pcbabusiness_echarts" */ 'echarts').then((echarts) 
     var error = e.error || e, config = e.config || null;
     modle.common.request_error(error, config);
   });
-  // var consignmentAmountDom = document.getElementById('consignmentAmount');
-  // var consignmentAmountChart = echarts.init(consignmentAmountDom);
-  // var consignmentAmountChartOption = $.extend({}, chartOption, {
-  //   tooltip: {
-  //     trigger: 'axis',
-  //     axisPointer: {
-  //       type: 'cross',
-  //       crossStyle: {
-  //         color: '#999'
-  //       }
-  //     }
-  //   },
-  //   title: {
-  //     text: currentMonth + '出货金额趋势',
-  //     left: 0,
-  //     top: 0
-  //   },
-  //   legend: {
-  //     data: ['出货总产值(万)', '分公司出货金额(万)', '模块出货金额(万)'],
-  //     left: 'right'
-  //   },
-  //   series: [
-  //     {
-  //       name: '出货总产值(万)',
-  //       type: 'bar',
-  //       barWidth: '40%',
-  //       label: {
-  //         normal: {
-  //           fontSize: 14,
-  //           show: true
-  //         }
-  //       },
-  //       data: []
-  //     },
-  //     {
-  //       name: '分公司出货金额(万)',
-  //       type: 'line',
-  //       label: {
-  //         normal: {
-  //           fontSize: 14,
-  //           show: true
-  //         }
-  //       },
-  //       data: []
-  //     },
-  //     {
-  //       name: '模块出货金额(万)',
-  //       type: 'line',
-  //       label: {
-  //         normal: {
-  //           fontSize: 14,
-  //           show: true
-  //         }
-  //       },
-  //       data: []
-  //     }
-  //   ]
-  // });
-  // consignmentAmountChart.setOption(consignmentAmountChartOption);
-  // modle.ajax.consignmentAmount($(consignmentAmountDom), {}, echarts).then((res) => {
-  //   modle.events.request.request_success_consignmentAmountChart(res);
-  // }).catch((e) => {
-  //   var error = e.error || e, config = e.config || null;
-  //   modle.common.request_error(error, config);
-  // });
+  var consignmentAmountDom = document.getElementById('consignmentAmount');
+  var consignmentAmountChart = echarts.init(consignmentAmountDom);
+  var consignmentAmountChartOption = $.extend({}, chartOption, {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        crossStyle: {
+          color: '#999'
+        }
+      }
+    },
+    title: {
+      text: currentMonth + '出货金额趋势',
+      left: 0,
+      top: 0
+    },
+    legend: {
+      data: ['出货总产值(万)', '分公司出货金额(万)', '模块出货金额(万)'],
+      left: 'right'
+    },
+    series: [
+      {
+        name: '出货总产值(万)',
+        type: 'bar',
+        barWidth: '40%',
+        label: {
+          normal: {
+            fontSize: 14,
+            show: true
+          }
+        },
+        data: []
+      },
+      {
+        name: '分公司出货金额(万)',
+        type: 'line',
+        label: {
+          normal: {
+            fontSize: 14,
+            show: true
+          }
+        },
+        data: []
+      },
+      {
+        name: '模块出货金额(万)',
+        type: 'line',
+        label: {
+          normal: {
+            fontSize: 14,
+            show: true
+          }
+        },
+        data: []
+      }
+    ]
+  });
+  consignmentAmountChart.setOption(consignmentAmountChartOption);
+  modle.ajax.consignmentAmount($(consignmentAmountDom), {}, echarts).then((res) => {
+    modle.events.request.request_success_consignmentAmountChart(res);
+  }).catch((e) => {
+    var error = e.error || e, config = e.config || null;
+    modle.common.request_error(error, config);
+  });
 
 });
 
@@ -604,40 +604,6 @@ $(document).ready(function () {
     };
     util.selectUpDataOptions(data);
   });
-  // var globalSwiper = new Swiper('.swiper-container-global', {
-  //   slidesPerView: 1,
-  //   spaceBetween: 20,
-  //   autoplay: {
-  //     disableOnInteraction: false,
-  //     delay: 20 * 1000 // 1秒切换一次
-  //   },
-  //   paginationClickable: true,
-  //   // loop: true, // 循环模式选项
-  //   on: {
-  //     transitionStart: function (event) {
-  //       var progressBar = $('#paginationProgressBar');
-  //       if (progressBar.hasClass('play')) {
-  //         $('#paginationProgressBar').removeClass('play');
-  //       }
-  //     },
-  //     touchMove: function (event) {
-  //       var progressBar = $('#paginationProgressBar');
-  //       if (progressBar.hasClass('play')) {
-  //         $('#paginationProgressBar').removeClass('play');
-  //       }
-  //     },
-  //     transitionEnd: function (event) {
-  //       var progressBar = $('#paginationProgressBar');
-  //       if (!progressBar.hasClass('play')) {
-  //         $('#paginationProgressBar').addClass('play');
-  //       }
-  //     },
-  //     init: function () {
-  //       $('#paginationProgressBar').addClass('play');
-  //     }
-  //   }
-  //
-  // });
   modle.ajax.orderList({
     orderName: 'orderDate',
     orderRule: 'desc',
@@ -649,15 +615,15 @@ $(document).ready(function () {
     var error = e.error || e, config = e.config || null;
     modle.common.request_error(error, config);
   });
-  // modle.ajax.consignmentList({
-  //   orderName: 'shipDate',
-  //   orderRule: 'desc'
-  // }).then((res) => {
-  //   modle.events.request.request_success_consignmentList(res);
-  // }).catch(e => {
-  //   var error = e.error || e, config = e.config || null;
-  //   modle.common.request_error(error, config);
-  // });
+  modle.ajax.consignmentList({
+    orderName: 'shipDate',
+    orderRule: 'desc'
+  }).then((res) => {
+    modle.events.request.request_success_consignmentList(res);
+  }).catch(e => {
+    var error = e.error || e, config = e.config || null;
+    modle.common.request_error(error, config);
+  });
 });
 
 

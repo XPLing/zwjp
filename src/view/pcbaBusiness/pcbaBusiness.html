@@ -11,13 +11,12 @@
 <%= require("ejs-loader!components/base/alert/alert.ejs")({className:'c-message'}) %>
 <div class="g-wrap">
 
-  <div class="swiper-pagination-progress">
-    <div class="progress-bar" id="paginationProgressBar"></div>
-  </div>
+  <!--<div class="swiper-pagination-progress">-->
+    <!--<div class="progress-bar" id="paginationProgressBar"></div>-->
+  <!--</div>-->
   <!--<%= require("ejs-loader!components/common/header/header.ejs")({userInfoFlag:false}) %>-->
   <div class="g-main">
-
-    <div class="panel panel-default swiper-panel-hook">
+    <div class="panel panel-default">
       <div class="panel-heading">
         <h1 class="panel-title">下单数据</h1>
       </div>
@@ -41,11 +40,11 @@
               <div class="c-table-custom">
                 <div class="table-header">
                   <div class="tr thead">
-                    <div class="th w-5">下单日期</div>
+                    <div class="th w-2">下单日期</div>
                     <div class="th w-0">客户代码</div>
-                    <div class="th w-0">批次号</div>
-                    <div class="th w-5">销售代码</div>
-                    <div class="th w-0">机型</div>
+                    <div class="th w-3">批次号</div>
+                    <div class="th w-2">销售代码</div>
+                    <div class="th w-5">机型</div>
                     <div class="th w-0">订单套数</div>
                     <div class="th w-0">金额</div>
                     <div class="th w-0">备注</div>
@@ -62,63 +61,53 @@
         </div>
       </div>
     </div>
-    <!--<div class="panel panel-default swiper-panel-hook">-->
-      <!--<div class="panel-heading">-->
-        <!--<h1 class="panel-title">出货数据</h1>-->
-      <!--</div>-->
-      <!--<div class="panel-body">-->
-        <!--<div class="cont-wrap">-->
-          <!--<div class="chunk chart">-->
-            <!--<div class="statistic">-->
-            <!--</div>-->
-            <!--<div class="c-chart" id="consignmentAmount"></div>-->
-          <!--</div>-->
-          <!--<div class="chunk chunk-table">-->
-            <!--<div class="c-table-wrapper">-->
-              <!--<div class="c-shadow-local-abs">-->
-                <!--<div class="c-center-ta">-->
-                  <!--<div class="c-center-tc">-->
-                    <!--<div class="c-center-cont">-->
-                      <!--<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>-->
-                      <!--<span class="sr-only">Loading...</span>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class="c-table-custom">-->
-                <!--<div class="table-header">-->
-                  <!--<div class="tr thead">-->
-                    <!--<div class="th w-5">出货日期</div>-->
-                    <!--<div class="th w-0">客户代码</div>-->
-                    <!--<div class="th w-0">批次号</div>-->
-                    <!--<div class="th w-5">销售代码</div>-->
-                    <!--<div class="th w-5">机型</div>-->
-                    <!--<div class="th w-0">出货数量</div>-->
-                    <!--<div class="th w-0">金额</div>-->
-                    <!--<div class="th w-0">备注</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="table-cont slider swiper-container swiper-container-consignment">-->
-                  <!--<div class="swiper-wrapper" id="dataTableConsignment">-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="nothing">暂无内容~</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="swiper-container swiper-container-global">-->
-      <!--<div class="swiper-wrapper">-->
-        <!--<div class="swiper-slide">-->
-          <!---->
-        <!--</div>-->
-        <!--<div class="swiper-slide">-->
-          <!---->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">出货数据</h1>
+      </div>
+      <div class="panel-body">
+        <div class="cont-wrap">
+          <div class="chunk chart">
+            <div class="statistic">
+            </div>
+            <div class="c-chart" id="consignmentAmount"></div>
+          </div>
+          <div class="chunk chunk-table">
+            <div class="c-table-wrapper">
+              <div class="c-shadow-local-abs">
+                <div class="c-center-ta">
+                  <div class="c-center-tc">
+                    <div class="c-center-cont">
+                      <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="c-table-custom">
+                <div class="table-header">
+                  <div class="tr thead">
+                    <div class="th w-2">出货日期</div>
+                    <div class="th w-0">客户代码</div>
+                    <div class="th w-3">批次号</div>
+                    <div class="th w-2">销售代码</div>
+                    <div class="th w-5">机型</div>
+                    <div class="th w-0">出货数量</div>
+                    <div class="th w-0">金额</div>
+                    <div class="th w-0">备注</div>
+                  </div>
+                </div>
+                <div class="table-cont slider swiper-container swiper-container-consignment">
+                  <div class="swiper-wrapper" id="dataTableConsignment">
+                  </div>
+                </div>
+                <div class="nothing">暂无内容~</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <%= require("ejs-loader!components/common/footer/footer.ejs")()%>
 </div>

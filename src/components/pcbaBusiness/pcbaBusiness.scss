@@ -21,6 +21,7 @@
     }
   }
   .g-main{
+    font-size: 0;
     padding: 0 20px;
     .swiper-container-global{
       .swiper-slide{
@@ -28,18 +29,51 @@
       }
     }
     .panel{
+      @extend %lineElem_top;
+      width: 49.5%;
+      &+.panel{
+        margin-left: 1%;
+      }
       .panel-heading{
         h1{
           @include fs(18);
         }
       }
       .panel-body{
+        @include fs(12);
         .c-table-custom{
           .table-cont, .nothing{
             @include h(170);
           }
           .nothing{
            @include lh(170);
+          }
+          .table-header,.table-cont{
+            .tr{
+
+              .th,.td{
+                &.w-5{
+                  flex: 0 0 formatVal(100,rem);
+                }
+                &.w-3{
+                  flex: 0 0 formatVal(45,rem);
+                }
+                &.w-2{
+                  flex: 0 0 formatVal(30,rem);
+                }
+              }
+              .th{
+                font-weight: bold;
+                &+.th{
+                  border-left: 1px solid $loginMainBgColor;
+                }
+              }
+              .td{
+                &+.td{
+                  border-left: 1px solid $loginMainBgColor;
+                }
+              }
+            }
           }
         }
         .cont-wrap{
