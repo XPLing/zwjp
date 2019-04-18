@@ -88,12 +88,12 @@
           }
         }
         .navbar-brand {
-          @include lh(33);
-          @include h(33);
+          @include lh(35);
+          @include h(35);
           font-size: 0;
           img {
             @include w(127);
-            @include h(33);
+            @include h(35);
           }
 
         }

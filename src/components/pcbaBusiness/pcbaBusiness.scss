@@ -50,16 +50,15 @@
           }
           .table-header,.table-cont{
             .tr{
-
               .th,.td{
                 &.w-5{
-                  flex: 0 0 formatVal(100,rem);
+                  flex: 0 0 formatVal(90,rem);
                 }
                 &.w-3{
-                  flex: 0 0 formatVal(45,rem);
+                  flex: 0 0 formatVal(55,rem);
                 }
                 &.w-2{
-                  flex: 0 0 formatVal(30,rem);
+                  flex: 0 0 formatVal(40,rem);
                 }
               }
               .th{

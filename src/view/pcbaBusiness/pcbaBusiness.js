@@ -126,11 +126,11 @@ var modle = {
           {data: util.formatDate(data.orderDate, 'yy-MM-dd')},
           {data: data.custCode},
           {data: data.orderNo},
-          {data: data.salesRep},
+          // {data: data.salesRep},
           {data: data.fileName},
-          {data: data.setQuantity},
-          {data: data.orderAmount ? Number(data.orderAmount).toFixed(2) : 0.00},
-          {data: data.remark || 0}
+          {data: data.setQuantity}
+          // {data: data.orderAmount ? Number(data.orderAmount).toFixed(2) : 0.00}
+          // {data: data.remark || 0}
           // {data: data.ordertype}
         ];
 
@@ -163,11 +163,11 @@ var modle = {
           {data: util.formatDate(data.shipDate, 'yy-MM-dd')},
           {data: data.custCode},
           {data: data.orderNo},
-          {data: data.salesRep},
+          // {data: data.salesRep},
           {data: data.fileName},
-          {data: data.totalShipQty},
-          {data: data.amountShip ? Number(data.amountShip).toFixed(2) : 0.00},
-          {data: data.remark || 0}
+          {data: data.totalShipQty}
+          // {data: data.amountShip ? Number(data.amountShip).toFixed(2) : 0.00}
+          // {data: data.remark || 0}
           // {data: data.ordertype}
         ];
 
@@ -463,6 +463,7 @@ import(/* webpackChunkName: "pcbabusiness_echarts" */ 'echarts').then((echarts) 
       }
     },
     title: {
+      show: false,
       text: currentMonth + '下单金额分布图',
       left: 0,
       top: 0
@@ -528,6 +529,7 @@ import(/* webpackChunkName: "pcbabusiness_echarts" */ 'echarts').then((echarts) 
       }
     },
     title: {
+      show: false,
       text: currentMonth + '出货金额趋势',
       left: 0,
       top: 0

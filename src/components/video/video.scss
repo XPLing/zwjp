@@ -11,7 +11,8 @@
     }
   }
   .g-main{
-    padding: formatVal(5, rem) formatVal(30,rem) 0 formatVal(44,rem);
+    margin-top: formatVal(-35,rem);
+    padding: 0 formatVal(30,rem) 0 formatVal(44,rem);
     .titlebox{
       color: $color-theme;
       margin-bottom: formatVal(28,rem);
@@ -29,33 +30,26 @@
     .desc{
       display: flex;
       flex-flow: nowrap;
-      align-items: flex-end;
+      //align-items: flex-end;
       .info{
-        flex: 0 0 formatVal(318,rem);
-        margin-right: formatVal(28,rem);
-        .text{
-          margin-bottom: formatVal(23,rem);
-          @include fs_rem(11);
-          line-height: 1.8em;
-          color: $color-gray-7A;
-        }
-        .cover{
-          display: flex;
-          justify-content: space-around;
-          .item{
-            flex: 0 0 formatVal(104,rem);
-            img{
-              width: 100%;
-            }
-          }
+        flex: 0 0 formatVal(270,rem);
+        img{
+          display: block;
+          width: 100%;
         }
       }
       .video{
         flex: 1;
+        margin-left: formatVal(25,rem);
         video{
           display: block;
           width: 100%;
-          @include h(194);
+          @include h(223);
+          margin-bottom: formatVal(10,rem);
+        }
+        img{
+          display: block;
+          width: 100%;
         }
       }
     }
