@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--[if IE 8 ]>
+<html lang="en" class="ie8">
+<![endif]-->
+<head>
+  <%= require("ejs-loader!components/common/head.ejs")({refresh:false}) %>
+  <title>金百泽CSC系统</title>
+</head>
+<body>
+<%= require("ejs-loader!components/base/alert/alert.ejs")({className:'c-message'}) %>
+<div class="g-wrap">
+  <div class="g-main">
+    <img id="picture" src="">
+  </div>
+</div>
+<%= require("ejs-loader!components/common/footerScript.ejs")() %>
+</body>
+</html>

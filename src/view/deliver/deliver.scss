@@ -1,0 +1,168 @@
+@import "~scss/compile";
+
+.g-wrap {
+  @include fs(12);
+  .g-main {
+    .panel {
+      margin-bottom: formatVal(5, rem);
+      .panel-heading {
+        padding: formatVal(3, rem) formatVal(10, rem);
+        h1 {
+          line-height: 1em;
+        }
+      }
+      .panel-body {
+        padding: formatVal(5, rem) formatVal(10, rem);
+      }
+    }
+    .panel-body {
+      .c-table-custom {
+        .table-cont {
+          @include h(140);
+        }
+      }
+      .total-statistic {
+        display: flex;
+        line-height: 1;
+        padding: formatVal(5, rem) formatVal(8, rem);
+        border: 1px solid $loginMainBgColor;
+        margin-bottom: formatVal(5, rem);
+        @include fs(14);
+        .item {
+          margin-bottom: 0;
+          & + .item {
+            margin-left: formatVal(15, rem);
+          }
+        }
+      }
+      .cont-wrap {
+        display: flex;
+        .c-chart {
+          width: 100%;
+          @include h(200);
+        }
+        .c-table-wrapper {
+          .table-cont {
+            @include h(50);
+            overflow: hidden;
+          }
+        }
+        > .left {
+          max-width: 65%;
+          flex: 0 0 65%;
+          .c-table-wrapper {
+            margin: 0;
+            .table-cont{
+              height: auto;
+            }
+            .c-table-custom{
+              .table-header,.table-cont{
+                .th,.td{
+                  padding: formatVal(2,rem);
+                }
+              }
+            }
+          }
+          .chunk {
+            & + .chunk {
+              margin-top: formatVal(5, rem);
+            }
+            &.chart {
+              .statistic {
+                font-weight: bold;
+                @include fs(14);
+              }
+              .c-chart{
+                @include h(160);
+              }
+            }
+          }
+        }
+        > .right {
+          flex: 1;
+          .c-chart {
+            width: 100%;
+            @include h(80);
+          }
+          .wrapper {
+            padding: 0 0 formatVal(10, rem) formatVal(5, rem);
+          }
+          .c-table-wrapper {
+            margin: 0;
+            table{
+
+            }
+            .tr {
+              .td, .th {
+                padding: formatVal(2, rem) formatVal(5, rem);
+              }
+            }
+          }
+          .chunk {
+            &.compare {
+              .panel-body{
+                position: relative;
+                .cont-main{
+                  display: flex;
+                  align-items: center;
+                }
+                .item{
+                  flex: 1;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  &+.item{
+                    border-left: 1px solid $color-border-split-D8D;
+                  }
+                  p{
+                    margin-bottom: 0;
+                    font-weight: bold;
+                  }
+                  .data{
+                    display: flex;
+                    align-items: center;
+                    margin-left: formatVal(20,rem);
+                    line-height: 1em;
+                    @include fs(16);
+                    .fa{
+                      margin-right: formatVal(5,rem);
+                      @include fs(25);
+                    }
+                    &.increase{
+                      color: $color-red-ee5;
+                      .fa:before{
+                        content: "\F0D8";
+                      }
+                    }
+                    &.decrease{
+                      color: $themColor5;
+                      .fa:before{
+                        content: "\F0D7";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            .total{
+              margin-top: formatVal(10,rem);
+              .name {
+                float: left;
+                @include lh(10);
+              }
+              .progress {
+                margin-bottom: 0;
+                @include h(10);
+                .progress-bar{
+                  color: $color-text-66;
+                  @include lh(10);
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

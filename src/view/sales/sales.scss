@@ -1,0 +1,181 @@
+@import "~scss/compile";
+
+.g-wrap {
+  @include fs(12);
+  .g-main {
+    .panel {
+      margin-bottom: formatVal(5, rem);
+      .panel-heading {
+        padding: formatVal(3, rem) formatVal(10, rem);
+        h1 {
+          line-height: 1em;
+        }
+      }
+      .panel-body {
+        padding: formatVal(5, rem) formatVal(10, rem);
+      }
+    }
+    .panel-body {
+      .c-table-custom {
+        .table-cont {
+          @include h(140);
+        }
+      }
+      .total-statistic {
+        display: flex;
+        line-height: 1;
+        padding: formatVal(5, rem) formatVal(8, rem);
+        border: 1px solid $loginMainBgColor;
+        margin-bottom: formatVal(5, rem);
+        @include fs(14);
+        .item {
+          margin-bottom: 0;
+          & + .item {
+            margin-left: formatVal(15, rem);
+          }
+        }
+      }
+      .cont-wrap {
+        .c-chart {
+          width: 100%;
+          @include h(200);
+          &.sales {
+            @include h(130);
+          }
+          &.idfm {
+            @include h(130);
+          }
+        }
+        .c-table-wrapper {
+          .table-header{
+            .caption{
+              color: $whiteColor;
+              text-align: center;
+              padding: formatVal(3,rem) 0;
+              .title{
+                flex: 1;
+              }
+            }
+          }
+          .table-cont {
+            @include h(50);
+            overflow: hidden;
+            &.swiper-container-sales{
+              @include h(170);
+            }
+          }
+        }
+        > .chunk {
+          .titlebox{
+            margin-bottom: formatVal(5,rem);
+            .title{
+              display: inline-block;
+              padding: 5px 10px;
+              @include fs(16);
+              color: $whiteColor;
+            }
+          }
+          &.sales{
+            .titlebox{
+              .title{
+                background-color: $themColor2;
+              }
+            }
+            .progress-bar{
+              background-color: $themColor2;
+              span{
+                color: $color-text-2B3;
+              }
+            }
+            .c-table-wrapper {
+              .table-header{
+                .caption{
+                  background-color: $themColor2;
+                }
+              }
+            }
+          }
+          &.idfm{
+            .titlebox{
+              .title{
+                background-color: $themColor;
+              }
+            }
+            .c-table-wrapper {
+              .table-header{
+                .caption{
+                  background-color: $themColor;
+                }
+              }
+            }
+            .progress-bar{
+              background-color: $themColor;
+              span{
+                color: $color-text-2B3;
+              }
+            }
+          }
+          &+.chunk{
+            margin-top: formatVal(5,rem);
+          }
+          .main{
+            display: flex;
+            justify-content: space-between;
+          }
+          .c-table-wrapper {
+            margin: 0;
+            .tr {
+              .th {
+                padding: formatVal(2, rem) formatVal(5, rem);
+              }
+              .td {
+                padding: formatVal(5, rem);
+              }
+            }
+            .swiper-slide{
+              height: auto;
+              position: relative!important;
+            }
+          }
+          .chunk-item {
+            & + .chunk-item {
+            }
+            &.table{
+              flex: 0 0 54%;
+              margin-bottom: 0;
+            }
+            &.chart {
+              flex: 0 0 45%;
+              border: 1px solid $color-border-split-D8D;
+              padding: 5px;
+            }
+            .statistic {
+              padding: formatVal(3,rem) formatVal(5,rem);
+              margin-bottom: formatVal(5,rem);
+              @include fs(14);
+              font-weight: bold;
+              border: 1px solid $loginMainBgColor;
+              background-color: $color-gray-F5;
+              .detail{
+                display: flex;
+                flex-flow: wrap;
+                justify-content: space-between;
+              }
+              .item{
+                display: flex;
+                flex: 0 0 33.333%;
+                p{
+                  margin: 0;
+                }
+                .name{
+                 margin-right: .2em;
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

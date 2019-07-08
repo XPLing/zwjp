@@ -715,7 +715,7 @@
     border: 1px solid $loginMainBgColor;
     .tr{
       display: flex;
-      flex-flow: nowrap;
+      flex-flow: wrap;
       .th,.td{
         word-break: break-all;
         flex: 1;
@@ -738,8 +738,14 @@
         &.w-5{
           flex: 0 0 formatVal(100,rem);
         }
+        &.w-4{
+          flex: 0 0 formatVal(90,rem);
+        }
         &.w-3{
           flex: 0 0 formatVal(60,rem);
+        }
+        &.w-2{
+          flex: 0 0 formatVal(35,rem);
         }
       }
       .th{

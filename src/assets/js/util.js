@@ -69,7 +69,7 @@ var util = {
     businessUploadFilesUrl_multiple: '/infoDoc/form/multipart_Upload',
     businessUploadFilesUrl_single: '/infoDoc/form/multipart_Upload',
     requestState: {
-      ok: '200'
+      ERR_OK: '200'
     }
   },
   alert_autoHide: function (msg, type) {

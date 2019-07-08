@@ -2,7 +2,7 @@ import 'components/common/styleChunk';
 import 'components/common/scriptChunk';
 import 'swiper/dist/css/swiper.css';
 import Swiper from 'swiper';
-import 'components/pcbaBusiness/pcbaBusiness.scss';
+import './pcbaBusiness.scss';
 import * as util from 'js/util';
 import * as API from 'api/pcbaBusiness';
 import { ERR_OK, ERR_OK_STR } from 'api/config';

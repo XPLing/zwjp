@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--[if IE 8 ]>
+<html lang="en" class="ie8">
+<![endif]-->
+<head>
+  <%= require("ejs-loader!components/common/head.ejs")({refresh:3600}) %>
+  <title>中台 | 交付看板</title>
+</head>
+<body>
+<%= require("ejs-loader!components/base/alert/alert.ejs")({className:'c-message'}) %>
+<div class="g-wrap">
+  <!--<%= require("ejs-loader!components/common/header/header.ejs")({userInfoFlag:false}) %>-->
+  <div class="g-main">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">交付看板</h1>
+      </div>
+      <div class="panel-body">
+        <div class="cont-wrap">
+          <div class="left">
+            <div class="chunk chart">
+              <div class="c-chart small" id="speedChart"></div>
+            </div>
+            <div class="chunk table">
+              <div class="c-table-wrapper">
+                <div class="c-shadow-local-abs">
+                  <div class="c-center-ta">
+                    <div class="c-center-tc">
+                      <div class="c-center-cont">
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="c-table-custom" id="dataTable">
+                  <div class="table-header">
+                  </div>
+                  <div class="table-cont">
+                  </div>
+                  <div class="nothing">暂无内容~</div>
+                </div>
+              </div>
+            </div>
+            <div class="chunk chart">
+              <div class="c-chart" id="loadChart"></div>
+            </div>
+          </div>
+          <div class="right">
+            <div class="wrapper">
+              <div class="chunk panel panel-default table">
+                <div class="panel-heading">
+                  <h1 class="panel-title">在制数</h1>
+                </div>
+                <div class="panel-body">
+                  <div class="c-table-wrapper">
+                    <div class="c-shadow-local-abs">
+                      <div class="c-center-ta">
+                        <div class="c-center-tc">
+                          <div class="c-center-cont">
+                            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="c-table-custom">
+                      <div class="table-header">
+                        <div class="tr thead">
+                          <div class="th w-0">工厂</div>
+                          <div class="th w-0">在制指数</div>
+                          <div class="th w-0">逾期批次</div>
+                          <div class="th w-0">逾期率</div>
+                        </div>
+                      </div>
+                      <div class="table-cont">
+                        <div id="inProductionTable">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="chunk panel panel-default">
+                <div class="panel-heading">
+                  <h1 class="panel-title">2019年4月11日 出货量</h1>
+                </div>
+                <div class="panel-body">
+                  <div class="c-chart" id="shipmentDay"></div>
+                </div>
+              </div>
+              <div class="chunk panel panel-default">
+                <div class="panel-heading">
+                  <h1 class="panel-title">2019年4月累计出货量</h1>
+                </div>
+                <div class="panel-body">
+                  <div class="c-chart" id="shipmentMonth"></div>
+                  <div class="total clearfix">
+                    <span class="name">达成率：</span>
+                    <div class="progress" id="completeRate">
+                      <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        <span>0%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="chunk panel panel-default compare">
+                <div class="panel-heading">
+                  <h1 class="panel-title">出货情况对比</h1>
+                </div>
+                <div class="panel-body">
+                  <div class="c-shadow-local-abs">
+                    <div class="c-center-ta">
+                      <div class="c-center-tc">
+                        <div class="c-center-cont">
+                          <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cont-main" id="rateData">
+                    <div class="item">
+                      <p class="name">同比</p>
+                      <p class="data">
+                        <i class="fa"></i>
+                        <i id="sameCompare">5%</i>
+                      </p>
+                    </div>
+                    <div class="item">
+                      <p class="name">环比</p>
+                      <p class="data">
+                        <i class="fa"></i>
+                        <i id="ringCompare">-5%</i>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--<div class="chunk">-->
+              <!--<div class="c-chart" id="orderStructure"></div>-->
+            <!--</div>-->
+            <!--<div class="chunk">-->
+              <!--<div class="c-chart" id="consultation"></div>-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= require("ejs-loader!components/common/footer/footer.ejs")()%>
+</div>
+<%= require("ejs-loader!components/common/footerScript.ejs")() %>
+
+</body>
+</html>

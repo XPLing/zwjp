@@ -1,7 +1,7 @@
 import 'components/common/styleChunk';
 import 'components/common/scriptChunk';
 import Swiper from 'swiper';
-import 'components/trends/trends.scss';
+import './trends.scss';
 import * as util from 'js/util';
 import * as API from 'api/trends';
 import { ERR_OK, ERR_OK_STR } from 'api/config';

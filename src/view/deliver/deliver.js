@@ -1,9 +1,8 @@
 import 'components/common/styleChunk';
 import 'components/common/scriptChunk';
-import './order.scss';
-import Swiper from 'swiper';
+import './deliver.scss';
 import * as util from 'js/util';
-import * as API from 'api/order';
+import * as API from 'api/deliver';
 import {
   ERR_OK,
   ERR_OK_STR
@@ -58,27 +57,27 @@ var modle = {
       });
     },
     list (params) {
-      return API.orderList({
+      return API.qtyBacklogTable({
         params,
         other: {
           beforeSend: modle.events.request.request_success_beforeSend,
           resCB: modle.events.request.request_successInit_loadData,
-          insertElem: $('#dataTable')
+          insertElem: $('#inProductionTable')
         }
       });
     },
-    orderListStatistics (params) {
-      return API.orderListStatistics({
+    rate (params) {
+      return API.dayShipmentRate({
         params,
         other: {
           beforeSend: modle.events.request.request_success_beforeSend,
           resCB: modle.events.request.request_successInit_loadData,
-          insertElem: $('#dataTable')
+          insertElem: $('#rateData')
         }
       });
     },
-    orderStatistics: function (insertElem, params, echarts) {
-      return API.orderStatistics({
+    load: function (insertElem, params, echarts) {
+      return API.burdenChart({
         params,
         other: {
           beforeSend: modle.events.request.request_success_beforeSend_chart,
@@ -88,8 +87,19 @@ var modle = {
         }
       });
     },
-    pieChart: function (insertElem, params, echarts) {
-      return API.orderGroup({
+    speed: function (insertElem, params, echarts) {
+      return API.flowRateChart({
+        params,
+        other: {
+          beforeSend: modle.events.request.request_success_beforeSend_chart,
+          resCB: modle.events.request.request_successInit_loadData,
+          insertElem: insertElem,
+          echarts: echarts
+        }
+      });
+    },
+    pieChart: function (type, insertElem, params, echarts) {
+      return API[type]({
         params,
         other: {
           beforeSend: modle.events.request.request_success_beforeSend_chart,
@@ -110,28 +120,17 @@ var modle = {
         tr.setAttribute('class', 'tr');
         var tabbleHeader = insertElem.closest('.c-table-custom').find('.table-header .thead');
         var formatData = [{
-          data: data.orderNo
+          data: data.name
         },
           {
-            data: data.custCode
+            data: data.qty
           },
           {
-            data: data.abbrName
+            data: data.overDayQty
           },
           {
-            data: data.fileName
-          },
-          {
-            data: data.setQuantity || 0
-          },
-          {
-            data: data.orderDate.split(' ')[0] || 0
+            data: data.overDayQtyRate
           }
-          // {
-          //   data: data.trade
-          // }
-          // {data: data.orderproperties},
-          // {data: data.ordertype}
         ];
         $.each(formatData, (index, val) => {
           var td = document.createElement('div'),
@@ -148,6 +147,35 @@ var modle = {
         });
         item.appendChild(tr);
         return item;
+      },
+      tabHead (data, insertDom) {
+        var fragment = document.createDocumentFragment();
+        $(fragment).append(`<div class='tr thead'></div>`);
+        $.each(data, (index, val) => {
+          var w = 'w-0';
+          if (index === 0) {
+            w = 'w-2';
+          }
+          $(fragment).children('.tr').append(`<div class="th ${w}">${val}</div>`);
+        });
+        return fragment;
+      },
+      tabBody (data, head) {
+        var fragment = document.createDocumentFragment();
+        $.each(data, (trIdx, trDate) => {
+          $(fragment).append(`<div class='tr'></div>`);
+          $.each(trDate, (tdIdx, tdDate) => {
+            var thead = head.find('.th').eq(tdIdx), className = 'td',
+              theadClass = thead.attr('class').match(/(w-\d+)\s?.*$/);
+            var width = theadClass ? theadClass[1] : null;
+            if (width) {
+              className += ' ' + width;
+            }
+            $(fragment).children('.tr').eq(trIdx).append(`<div class="${className}">${tdDate}</div>`);
+          });
+        });
+
+        return fragment;
       }
     },
     request: {
@@ -157,16 +185,19 @@ var modle = {
           mesgElem.hide();
         }
         var insertElem = config.other.insertElem;
-        var tableWrapper = insertElem.parents('.c-table-wrapper');
+        var tableWrapper = insertElem.closest('.panel-body');
         tableWrapper.find('.c-shadow-local-abs').addClass('active');
         // table.find('.tip-meg').addClass('active').children('td').text("加载中。。。");
       },
       request_successInit_loadData: function (res) {
         var insertElem = res.config.other.insertElem;
-        var tableWrapper = insertElem.parents('.c-table-wrapper');
+        var tableWrapper = insertElem.closest('.panel-body');
         tableWrapper.find('.c-shadow-local-abs').removeClass('active');
       },
       request_success_list: function (res) {
+        if (res.resData.code !== util.variable.requestState.ERR_OK) {
+          return Promise.reject(res.resData);
+        }
         var trData = res.resData.result,
           config = res.config.other;
         var insertElem = config.insertElem;
@@ -177,36 +208,18 @@ var modle = {
           fragDom.appendChild(item);
         });
         insertElem.append(fragDom);
-        var swiperOpt = {
-          autoplay: {
-            disableOnInteraction: false,
-            delay: 2000 // 1秒切换一次
-          },
-          direction: 'vertical', // 垂直切换选项
-          slidesPerView: 'auto',
-          noSwiping: false
-        };
-        if (trData.length > 8) {
-          swiperOpt.loop = true;
-        }
-        var mySwiper = new Swiper('.swiper-container', swiperOpt);
+        modle.events.calculateSlideWrapperWidth(insertElem, null, '.table-cont');
       },
-      request_success_orderListStatistics: function (res) {
-        var data = res.resData.result,
-          config = res.config.other;
-        var insertElem = config.insertElem;
-        var today = $('#todayStatistic'),
-          todayData = data.today;
-        var month = $('#monthStatistic'),
-          monthData = data.last30day;
-        var sum = $('#sumStatistic'),
-          allData = data.all;
-        today.find('.count').text(todayData.num);
-        today.find('.amount').text(todayData.amount);
-        month.find('.count').text(monthData.num);
-        month.find('.amount').text(monthData.amount);
-        sum.find('.count').text(allData.num);
-        sum.find('.amount').text(allData.amount);
+      request_success_rate: function (res) {
+        if (res.resData.code !== util.variable.requestState.ERR_OK) {
+          return Promise.reject(res.resData);
+        }
+        var config = res.config.other, resData = res.resData.result,
+          insertElem = config.insertElem;
+        var sameCompareClass = resData.dayShipmentSame < 0 ? 'decrease' : 'increase',
+          ringCompareClass = resData.dayShipmentLast < 0 ? 'decrease' : 'increase';
+        $('#sameCompare').html(resData.dayShipmentSame).closest('.data').addClass(sameCompareClass);
+        $('#ringCompare').html(resData.dayShipmentLast).closest('.data').addClass(ringCompareClass);
       },
       request_success_delete: function (data, param) {
         var result = data.result,
@@ -220,38 +233,119 @@ var modle = {
         tableWrapper.find('.c-shadow-local-abs').removeClass('active');
       },
       request_success_chart: function (respone) {
-        console.log(respone);
+        if (respone.resData.code !== util.variable.requestState.ERR_OK) {
+          return Promise.reject(respone.resData);
+        }
         var data = respone.resData,
           config = respone.config.other,
           insertElem = config.insertElem,
           res = data.result,
-          echarts = config.echarts;
+          echarts = config.echarts, seriesOpts = [];
         var instance = echarts.getInstanceByDom(insertElem[0]);
-        var xdata = res.x,
-          yData = res.y;
         /* if(hasInstance != undefined){
             hasInstance.clear();
             echarts.dispose(chart);
             // delete ChartItem;
             // chart.innerHTML="";
         } */
+        var xdata = [], yData = [], yKeys = [];
+        res.x = res.x.map((val, index) => {
+          if (index % 2) {
+            return res.x[index - 1] + '-' + val;
+          }
+        }).filter((val, index) => {
+          return val;
+        });
+        Object.keys(res.y).forEach((val, index) => {
+          var item = res.y[val];
+          res.y[val] = item.map((val, index) => {
+            if (index % 2) {
+              let res = item[index - 1] + val;
+              return /\./.test(res) ? res.toFixed(2) : res;
+            }
+          }).filter((val, index) => {
+            return val !== undefined;
+          });
+        });
+        console.log(res);
+        if (res) {
+          xdata = res.x;
+          yData = res.y;
+          yKeys = Object.keys(yData);
+          yKeys.forEach((key) => {
+            seriesOpts.push({
+              data: yData[key]
+            });
+          });
+          var tab = $('#dataTable'), tabHead = modle.events.createDom.tabHead(['时间', ...xdata]),
+            tabBody = modle.events.createDom.tabBody(yKeys.map((val, index) => {
+              return [val, ...yData[val]];
+            }), $(tabHead));
+          tab.find('.table-header').append(tabHead);
+          tab.find('.table-cont').append(tabBody);
+        }
         instance.setOption({
           xAxis: {
             type: 'category',
             data: xdata
           },
-          series: [{
-            data: yData
-          }]
+          series: seriesOpts
+        });
+        instance.hideLoading();
+        instance.resize();
+
+      },
+      request_success_chart_load: function (respone) {
+        if (respone.resData.code !== util.variable.requestState.ERR_OK) {
+          return Promise.reject(respone.resData);
+        }
+        var data = respone.resData,
+          config = respone.config.other,
+          insertElem = config.insertElem,
+          res = data.result,
+          echarts = config.echarts, seriesOpts = [];
+        var instance = echarts.getInstanceByDom(insertElem[0]);
+        /* if(hasInstance != undefined){
+            hasInstance.clear();
+            echarts.dispose(chart);
+            // delete ChartItem;
+            // chart.innerHTML="";
+        } */
+        var xdata = [], yData = [], yKeys = [];
+        if (res) {
+          xdata = res.x;
+          yData = res.y;
+          yKeys = Object.keys(yData);
+          yKeys.forEach((key) => {
+            seriesOpts.push({
+              type: 'bar',
+              data: yData[key],
+              name: key
+            });
+          });
+        }
+        instance.setOption({
+          legend: {
+            data: yKeys,
+            left: 'right'
+          },
+          xAxis: {
+            type: 'category',
+            data: xdata
+          },
+          series: seriesOpts
         });
         instance.hideLoading();
         instance.resize();
       },
       request_success_pieChart: function (respone) {
+        if (respone.resData.code !== util.variable.requestState.ERR_OK) {
+          return Promise.reject(respone.resData);
+        }
         var data = respone.resData,
           config = respone.config.other,
           insertElem = config.insertElem,
-          res = data.result,
+          res = data.result.group || data.result,
           echarts = config.echarts;
         var instance = echarts.getInstanceByDom(insertElem[0]);
         /* if(hasInstance != undefined){
@@ -262,7 +356,10 @@ var modle = {
         } */
         var legend = [];
         $.each(res, (index, val) => {
-          legend.push(val.name);
+          legend.push({
+            name: val.name,
+            icon: 'circle'
+          });
         });
         instance.setOption({
           legend: {
@@ -274,6 +371,7 @@ var modle = {
         });
         instance.hideLoading();
         instance.resize();
+        return Promise.resolve(data);
       },
       request_success_beforeSend_chart: function (res) {
         var config = res.other,
@@ -321,13 +419,92 @@ var modle = {
       param.orderRule = data.order[0].dir;
       param.page = tableData.page() + 1;
       return param;
+    },
+    calculateSlideWrapperWidth: function (insertElem, childrenName, contWrapperName) {
+      var insertElemH = insertElem.outerHeight(),
+        contWrapper = insertElem.closest(contWrapperName || '.swiper-container'),
+        contWrapperH = contWrapper.outerHeight(),
+        slides = insertElem.find(childrenName || '.swiper-slide'),
+        slideH = slides.eq(0).children('.tr').outerHeight() + 1;
+      var clientSlideNum = Math.ceil(contWrapperH / slideH);
+      contWrapper.css('height', slides.length * slideH + 'px');
+      return {
+        clientSlideNum,
+        width: slideH * clientSlideNum
+      };
     }
   }
 };
 
-import(/* webpackChunkName: "order_echarts" */ 'echarts').then((echarts) => {
-  var chartOption = {
-    color: ['#3398DB'],
+import(/* webpackChunkName: "deliver_echarts" */ 'echarts').then((echarts) => {
+
+  var lineChartOption = {
+    grid: {
+      top: '35',
+      left: '20',
+      right: '20',
+      bottom: '20',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: []
+    },
+    yAxis: [
+      {
+        type: 'value'
+      }
+    ]
+  };
+  // 流速
+  var speedDom = document.getElementById('speedChart'), speedChart = echarts.init(speedDom);
+  var nowDate = util.formatDate(new Date(), 'yy年MM月dd日');
+  var speedChartOption = $.extend({}, lineChartOption, {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        crossStyle: {
+          color: '#999'
+        }
+      }
+    },
+    title: {
+      text: `流速区 ${nowDate}全天流速数据`,
+      left: 'left'
+    },
+    legend: {
+      data: ['PCB-DYW', 'PCB-XA', 'PCB-工程部'],
+      left: 'right'
+    },
+    series: [
+      {
+        name: 'PCB-工程部',
+        type: 'line',
+        barWidth: '85%',
+        data: []
+      },
+      {
+        name: 'PCB-XA',
+        type: 'line',
+        data: []
+      },
+      {
+        name: 'PCB-DYW',
+        type: 'line',
+        data: []
+      }
+    ]
+  });
+  speedChart.setOption(speedChartOption);
+  modle.ajax.speed($(speedDom), {}, echarts).then((res) => {
+    return modle.events.request.request_success_chart(res);
+  }).catch((e) => {
+    var error = e.error || e, config = e.config || null;
+    modle.common.request_error(error, config);
+  });
+
+  var barChartOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -338,53 +515,33 @@ import(/* webpackChunkName: "order_echarts" */ 'echarts').then((echarts) => {
       }
     },
     grid: {
-      left: '5%',
-      right: '3%'
+      top: '35',
+      left: '20',
+      right: '20',
+      bottom: '20',
+      containLabel: true
     },
     xAxis: {
       type: 'category',
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '11月', '10月', '12月']
+      data: []
     },
     yAxis: {
       type: 'value'
-    },
-    dataZoom: [{
-      type: 'slider',
-      show: true,
-      xAxisIndex: [0],
-      filterMode: 'filter'
-    },
-      {
-        type: 'inside',
-        show: true,
-        xAxisIndex: [0],
-        filterMode: 'filter'
-      }
-    ]
+    }
   };
-  // 订单额
-  var successfulTradeDom = document.getElementById('successfulTrade');
-  var successfulTradeChart = echarts.init(successfulTradeDom);
-  var successfulTradeChartOption = $.extend({}, chartOption, {
-    legend: {
-      data: ['订单量(单)'],
-      left: 'left'
-    },
-    series: [{
-      name: '订单量(单)',
-      type: 'bar',
-      data: [100, 150, 300, 280, 200, 300, 400, 550, 680, 430, 400, 340],
-      label: {
-        normal: {
-          fontSize: 18,
-          show: true
-        }
-      }
-    }]
+  // 负荷
+  var loadDom = document.getElementById('loadChart');
+  var loadChart = echarts.init(loadDom);
+  var loadChartOption = $.extend({}, barChartOption, {
+    title: {
+      text: `负荷区 未来15天产能与符合差`,
+      left: 'left',
+      textStyle: {}
+    }
   });
-  successfulTradeChart.setOption(successfulTradeChartOption);
-  modle.ajax.orderStatistics($(successfulTradeDom), {}, echarts).then((res) => {
-    modle.events.request.request_success_chart(res);
+  loadChart.setOption(loadChartOption);
+  modle.ajax.load($(loadDom), {}, echarts).then((res) => {
+    return modle.events.request.request_success_chart_load(res);
   }).catch((e) => {
     var error = e.error || e,
       config = e.config || null;
@@ -394,32 +551,37 @@ import(/* webpackChunkName: "order_echarts" */ 'echarts').then((echarts) => {
     legend: {
       data: [],
       orient: 'vertical',
-      right: '2%',
+      right: 10,
       bottom: '0',
+      itemWidth: 10,
+      itemHeight: 10,
+      itemGap: 6,
       textStyle: {
-        fontSize: 12
+        fontSize: 10
       }
     },
     grid: {
-      left: '5%',
-      right: '3%',
+      left: 20,
+      right: 10,
       containLabel: true
     }
   };
 
-  // 订单类型
-  var orderTypeDom = document.getElementById('orderType');
-  var orderTypeChart = echarts.init(orderTypeDom);
-  var orderTypeChartOption = $.extend({}, pieOption, {
+  // 当天出货量
+  var shipmentDayDom = document.getElementById('shipmentDay');
+  var shipmentDate = util.formatDate(new Date(), 'yyyy年MM月dd日');
+  $(shipmentDayDom).closest('.panel').find('.panel-heading .panel-title').html(`${shipmentDate} 出货量`);
+  var shipmentDayChart = echarts.init(shipmentDayDom);
+  var shipmentDayChartOption = $.extend({}, pieOption, {
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b} : {c}人次 ({d}%)'
+      formatter: '{a} <br/>{b} : {c}万元 ({d}%)'
     },
     series: [{
       name: '订单类型',
       type: 'pie',
       radius: '100%',
-      center: ['30%', 'middle'],
+      center: ['25%', 'middle'],
       label: {
         normal: {
           position: 'inner',
@@ -436,29 +598,31 @@ import(/* webpackChunkName: "order_echarts" */ 'echarts').then((echarts) => {
       }
     }]
   });
-  orderTypeChart.setOption(orderTypeChartOption);
-  modle.ajax.pieChart($(orderTypeDom), {
+  shipmentDayChart.setOption(shipmentDayChartOption);
+  modle.ajax.pieChart('dayShipmentGroup', $(shipmentDayDom), {
     range: 'ordertype'
   }, echarts).then((res) => {
-    modle.events.request.request_success_pieChart(res);
+    return modle.events.request.request_success_pieChart(res);
   }).catch((e) => {
     var error = e.error || e,
       config = e.config || null;
     modle.common.request_error(error, config);
   });
-  // 订单结构
-  var orderStructureDom = document.getElementById('orderStructure');
-  var orderStructureChart = echarts.init(orderStructureDom);
-  var orderStructureChartOption = $.extend({}, pieOption, {
+  // 当月出货量
+  var shipmentMonthDom = document.getElementById('shipmentMonth');
+  var shipmentMonthDate = util.formatDate(new Date(), 'yyyy年MM月');
+  $(shipmentMonthDom).closest('.panel').find('.panel-heading .panel-title').html(`${shipmentMonthDate} 累计出货量`);
+  var shipmentMonthChart = echarts.init(shipmentMonthDom);
+  var shipmentMonthChartOption = $.extend({}, pieOption, {
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b} : {c}人次 ({d}%)'
+      formatter: '{a} <br/>{b} : {c}万元 ({d}%)'
     },
     series: [{
       name: '订单结构',
       type: 'pie',
       radius: '100%',
-      center: ['30%', 'middle'],
+      center: ['25%', 'middle'],
       label: {
         normal: {
           position: 'inner',
@@ -472,146 +636,38 @@ import(/* webpackChunkName: "order_echarts" */ 'echarts').then((echarts) => {
       }
     }]
   });
-  orderStructureChart.setOption(orderStructureChartOption);
-  modle.ajax.pieChart($(orderStructureDom), {
+  shipmentMonthChart.setOption(shipmentMonthChartOption);
+  modle.ajax.pieChart('monthShipmentGroup', $(shipmentMonthDom), {
     range: 'orderproperties'
   }, echarts).then((res) => {
-    modle.events.request.request_success_pieChart(res);
+    return modle.events.request.request_success_pieChart(res);
+  }).then(res => {
+    var completeRate = `${res.result.completeRate}%`;
+    $('#completeRate').find('.progress-bar').attr({
+      'aria-valuenow': res.result.completeRate,
+      'style': `width:${completeRate}`
+    }).find('span').html(completeRate);
   }).catch((e) => {
     var error = e.error || e,
       config = e.config || null;
     modle.common.request_error(error, config);
   });
 
-  // 行业
-  var tradeDom = document.getElementById('trade');
-  var tradeChart = echarts.init(tradeDom);
-  var tradeChartOption = $.extend({}, pieOption, {
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b} : {c}人次 ({d}%)'
-    },
-    legend: {
-      data: [],
-      orient: 'vertical',
-      right: '1%',
-      bottom: '0',
-      textStyle: {
-        fontSize: 8
-      }
-    },
-    series: [{
-      name: '行业',
-      type: 'pie',
-      radius: '80%',
-      center: ['30%', 'middle'],
-      label: {
-        normal: {
-          position: 'inner',
-          formatter: '{d}%'
-        }
-      },
-      labelLine: {
-        normal: {
-          show: false
-        }
-      }
-    }]
-  });
-  tradeChart.setOption(tradeChartOption);
-  modle.ajax.pieChart($(tradeDom), {
-    range: 'trade'
-  }, echarts).then((res) => {
-    modle.events.request.request_success_pieChart(res);
-  }).catch((e) => {
-    var error = e.error || e,
-      config = e.config || null;
-    modle.common.request_error(error, config);
-  });
-
-});
-
-import(/* webpackChunkName: "order_laydate" */ 'components/lib/laydate/laydateChunk').then((laydate) => {
-  $(() => {
-    // 设置laydate css加载路径
-    util.laydate.setPath(laydate);
-    // laydate初始化
-    var layOptStart = $.extend({}, util.laydate.option, {
-      elem: '#startTime',
-      max: new Date().getTime(),
-      value: new Date(new Date().getTime() - 3 * 30 * 24 * 3600 * 1000),
-      done: function (value, date, endDate) {
-        if (!value) {
-          return;
-        }
-        endTime.config.min = {
-          year: date.year,
-          month: date.month - 1,
-          date: date.date,
-          hours: date.hours,
-          minutes: date.minutes,
-          seconds: date.seconds
-        };
-      }
-    });
-    var layOptEnd = $.extend({}, util.laydate.option, {
-      elem: '#endTime',
-      max: new Date().getTime(),
-      value: new Date(),
-      done: function (value, date, endDate) {
-        if (!value) {
-          return;
-        }
-        startTime.config.max = {
-          year: date.year,
-          month: date.month - 1,
-          date: date.date,
-          hours: date.hours,
-          minutes: date.minutes,
-          seconds: date.seconds
-        };
-      }
-    });
-    var startTime = laydate.render(layOptStart);
-    var endTime = laydate.render(layOptEnd);
-  });
 });
 
 $(document).ready(function () {
 
   // 页面ui初始化
   util.basic.init();
-  // 获取页面信息
-  util.provide.getPageInfo().then((res) => {
-    util.provide.events.request_success_loadData(res);
-  }).catch(e => {
-    var error = e.error || e, config = e.config || null;
-    util.provide.events.request_error(error, config);
-  });
-  // 下拉框选择信息修改
-  $('.c-select-menu').on('click', 'a', function () {
-    var _this = $(this);
-    var parent = _this.parents('.c-select');
-    var dataElem = parent.find('.dataElem');
-    var data = {
-      dataElem: dataElem,
-      target: _this
-    };
-    util.selectUpDataOptions(data);
-  });
-
-  modle.ajax.list({
-    orderName: 'orderDate',
-    orderRule: 'desc'
-  }).then((res) => {
-    modle.events.request.request_success_list(res);
+  modle.ajax.list().then((res) => {
+    return modle.events.request.request_success_list(res);
   }).catch(e => {
     var error = e.error || e,
       config = e.config || null;
     modle.common.request_error(error, config);
   });
-  modle.ajax.orderListStatistics().then((res) => {
-    modle.events.request.request_success_orderListStatistics(res);
+  modle.ajax.rate().then((res) => {
+    return modle.events.request.request_success_rate(res);
   }).catch(e => {
     var error = e.error || e,
       config = e.config || null;

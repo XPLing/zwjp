@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--[if IE 8 ]>
+<html lang="en" class="ie8">
+<![endif]-->
+<head>
+  <%= require("ejs-loader!components/common/head.ejs")({refresh:3600}) %>
+  <title>中台 | 销售看板</title>
+</head>
+<body>
+<%= require("ejs-loader!components/base/alert/alert.ejs")({className:'c-message'}) %>
+<div class="g-wrap">
+  <!--<%= require("ejs-loader!components/common/header/header.ejs")({userInfoFlag:false}) %>-->
+  <div class="g-main">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">销售看板</h1>
+      </div>
+      <div class="panel-body">
+        <div class="cont-wrap">
+          <div class="chunk sales">
+            <!--<div class="titlebox">-->
+              <!--<span class="title">营销中心</span>-->
+            <!--</div>-->
+            <div class="main">
+              <div class="chunk-item table">
+                <div class="c-table-wrapper">
+                  <div class="c-shadow-local-abs">
+                    <div class="c-center-ta">
+                      <div class="c-center-tc">
+                        <div class="c-center-cont">
+                          <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-table-custom">
+                    <div class="table-header">
+                      <div class="tr caption">
+                        <div class="title">营销中心</div>
+                      </div>
+                      <div class="tr thead">
+                        <div class="th w-0">排名</div>
+                        <div class="th w-4">区域</div>
+                        <div class="th w-0">当日销售额</div>
+                        <div class="th w-0 dynamic-w">实绩</div>
+                        <div class="th w-0 dynamic-m">月实绩</div>
+                        <div class="th w-0 dynamic-m">月收款</div>
+                        <div class="th w-0 dynamic-m">月目标</div>
+                        <div class="th w-0">达成率</div>
+                      </div>
+                    </div>
+                    <div class="table-cont slider swiper-container swiper-container-sales">
+                      <div class="swiper-wrapper" id="salesTable">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="chunk-item chart">
+                <div class="statistic">
+                  <div class="title">合计：(单位：万)</div>
+                  <div class="detail">
+                    <div class="item daySalesAmount">
+                      <p class="name">当日销售额：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item monthSalesAmount">
+                      <p class="name dynamic-m">月实绩：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item monthAim">
+                      <p class="name dynamic-m">月目标：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item weekSalesAmount">
+                      <p class="name dynamic-w">实绩：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item monthAmount">
+                      <p class="name dynamic-m">月收款：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item completeRate">
+                      <p class="name">达成率：</p>
+                      <p class="data">%</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="c-chart sales" id="salesChart"></div>
+              </div>
+            </div>
+          </div>
+          <div class="chunk idfm">
+            <!--<div class="titlebox">-->
+              <!--<span class="title">造物中心</span>-->
+            <!--</div>-->
+            <div class="main">
+              <div class="chunk-item table">
+                <div class="c-table-wrapper">
+                  <div class="c-shadow-local-abs">
+                    <div class="c-center-ta">
+                      <div class="c-center-tc">
+                        <div class="c-center-cont">
+                          <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="c-table-custom">
+                    <div class="table-header">
+                      <div class="tr caption">
+                        <div class="title">造物中心</div>
+                      </div>
+                      <div class="tr thead">
+                        <div class="th w-2">排名</div>
+                        <div class="th w-4">区域</div>
+                        <div class="th w-0">当日销售额</div>
+                        <div class="th w-0 dynamic-w">实绩</div>
+                        <div class="th w-0 dynamic-m">月实绩</div>
+                        <div class="th w-0 dynamic-m">月收款</div>
+                        <div class="th w-0 dynamic-m">月目标</div>
+                        <div class="th w-0">达成率</div>
+                      </div>
+                    </div>
+                    <div class="table-cont">
+                      <div id="orderTable">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="chunk-item chart">
+                <div class="statistic">
+                  <div class="title">合计：(单位：万)</div>
+                  <div class="detail">
+                    <div class="item daySalesAmount">
+                      <p class="name">当日销售额：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item monthSalesAmount">
+                      <p class="name dynamic-m">月实绩：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item monthAim">
+                      <p class="name dynamic-m">月目标：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item weekSalesAmount">
+                      <p class="name dynamic-w">实绩：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item monthAmount">
+                      <p class="name dynamic-m">月收款：</p>
+                      <p class="data"></p>
+                    </div>
+                    <div class="item completeRate">
+                      <p class="name">达成率：</p>
+                      <p class="data">%</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="c-chart idfm" id="idfmChart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= require("ejs-loader!components/common/footer/footer.ejs")()%>
+</div>
+<%= require("ejs-loader!components/common/footerScript.ejs")() %>
+
+</body>
+</html>
